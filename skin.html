@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <!--
+    [선택] 아래에 본인의 Google Tag Manager / 네이버 서치어드바이저 / AdSense 코드를 넣으세요.
+    예시:
+    <script>GTM 코드</script>
+    <meta name="naver-site-verification" content="본인 인증코드" />
+  -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[##_page_title_##]</title>
+  <link rel="alternate" type="application/rss+xml" title="[##_title_##]" href="[##_rss_url_##]">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body id="[##_body_id_##]">
+<s_t3>
+
+  <!-- ===== 헤더 ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <span class="terminal-prompt">&gt;_</span>
+        <h1 class="blog-title">
+          <a href="[##_blog_link_##]">[##_title_##]</a>
+        </h1>
+      </div>
+      <div class="header-right">
+        <nav class="blog-menu">[##_blog_menu_##]</nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+          <span class="theme-label" id="themeLabel">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 메인 레이아웃 (3컬럼) ===== -->
+  <div class="layout">
+
+    <!-- ===== 좌측 사이드바 ===== -->
+    <aside class="sidebar sidebar-left">
+      <s_sidebar>
+
+        <!-- 프로필 -->
+        <s_sidebar_element>
+          <!-- 프로필 -->
+          <div class="widget widget-profile">
+            <div class="profile-card">
+              <div class="profile-avatar">
+                <img src="[##_image_##]" alt="[##_blogger_##]">
+                <span class="status-dot"></span>
+              </div>
+              <strong class="profile-name">[##_blogger_##]</strong>
+              <p class="profile-desc">[##_desc_##]</p>
+              <div class="profile-links">
+                <s_link_rep>
+                  <a href="[##_link_url_##]" target="_blank" title="[##_link_site_##]"><i class="fa-solid fa-link"></i></a>
+                </s_link_rep>
+              </div>
+            </div>
+          </div>
+        </s_sidebar_element>
+
+        <!-- 검색 -->
+        <s_sidebar_element>
+          <!-- 검색 -->
+          <div class="widget widget-search">
+            <s_search>
+              <form action="#" method="get" class="search-box" onsubmit="[##_search_onclick_submit_##]">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" name="[##_search_name_##]" id="[##_search_name_##]" value="[##_search_text_##]" placeholder="Search posts...">
+                <button type="submit" aria-label="Search">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </form>
+            </s_search>
+          </div>
+        </s_sidebar_element>
+
+        <!-- 카테고리 -->
+        <s_sidebar_element>
+          <!-- 카테고리 -->
+          <div class="widget widget-category">
+            <h3 class="widget-title"><i class="fa-solid fa-folder-tree"></i> Categories</h3>
+            [##_category_##]
+          </div>
+        </s_sidebar_element>
+
+        <!-- 방문자 그래프 + 통계 -->
+        <s_sidebar_element>
+          <!-- 방문자 통계 -->
+          <div class="widget widget-visitor">
+            <h3 class="widget-title"><i class="fa-solid fa-chart-area"></i> Visitors</h3>
+            <canvas id="visitorChart" width="200" height="80"></canvas>
+            <div class="visitor-grid">
+              <div class="visitor-item">
+                <span class="visitor-label">Yesterday</span>
+                <span class="visitor-count">[##_count_yesterday_##]</span>
+              </div>
+              <div class="visitor-item">
+                <span class="visitor-label">Today</span>
+                <span class="visitor-count today">[##_count_today_##]</span>
+              </div>
+              <div class="visitor-item">
+                <span class="visitor-label">Total</span>
+                <span class="visitor-count">[##_count_total_##]</span>
+              </div>
+            </div>
+          </div>
+        </s_sidebar_element>
+
+      </s_sidebar>
+    </aside>
+
+    <!-- ===== 메인 콘텐츠 ===== -->
+    <main class="content" id="dkBody">
+
+      <!-- 홈 커버 -->
+      <s_cover>
+        <s_cover_group>
+          <s_cover_rep>
+            <div class="cover-item">
+              <a href="[##_cover_item_link_##]" class="cover-link">
+                <s_cover_item_thumbnail>
+                  <img src="[##_cover_item_thumbnail_##]" alt="[##_cover_item_title_##]">
+                </s_cover_item_thumbnail>
+                <strong>[##_cover_item_title_##]</strong>
+                <span class="cover-date">[##_cover_item_date_##]</span>
+              </a>
+            </div>
+          </s_cover_rep>
+        </s_cover_group>
+      </s_cover>
+
+      <!-- 홈 타이틀 -->
+      <div class="index_title">
+        <h2 class="list-title">전체 글</h2>
+      </div>
+
+      <!-- 리스트 타이틀 (카테고리/검색) -->
+      <s_list>
+        <div class="list-header">
+          <h2 class="list-title">[##_list_conform_##] <span class="list-count">([##_list_count_##])</span></h2>
+        </div>
+      </s_list>
+
+      <!-- 광고 상단 -->
+      [##_revenue_list_upper_##]
+
+      <!-- ===== 글 ===== -->
+      <s_article_rep>
+
+        <!-- 목록 뷰 -->
+        <s_index_article_rep>
+          <article class="post-card post-list-item">
+            <div class="post-content">
+              <h2 class="post-title">
+                <a href="[##_article_rep_link_##]">[##_article_rep_title_##]</a>
+              </h2>
+              <p class="post-summary">[##_article_rep_summary_##]</p>
+              <div class="post-meta">
+                <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
+                <span class="post-date">[##_article_rep_date_##]</span>
+                <s_rp_count>
+                  <a href="[##_article_rep_link_##]#comment" class="post-comment-count"><i class="fa-regular fa-comment"></i> [##_article_rep_rp_cnt_##]</a>
+                </s_rp_count>
+              </div>
+            </div>
+            <s_article_rep_thumbnail>
+              <a href="[##_article_rep_link_##]" class="post-thumb-side">
+                <img src="[##_article_rep_thumbnail_url_##]" alt="[##_article_rep_title_##]" loading="lazy">
+              </a>
+            </s_article_rep_thumbnail>
+          </article>
+        </s_index_article_rep>
+
+        <!-- 본문 뷰 (퍼머링크) -->
+        <s_permalink_article_rep>
+          <article class="post-card post-single">
+            <div class="post-content">
+              <!-- 브레드크럼 -->
+              <nav class="breadcrumb">
+                <a href="[##_blog_link_##]">Home</a>
+                <span class="bc-sep">/</span>
+                <a href="[##_article_rep_category_link_##]">[##_article_rep_category_##]</a>
+              </nav>
+              <div class="post-meta">
+                <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
+                <span class="post-date">[##_article_rep_date_##]</span>
+                [##_s_ad_isolation_##]
+              </div>
+              <h2 class="post-title">[##_article_rep_title_##]</h2>
+              <!-- 글자 크기 조절 -->
+              <div class="font-size-controls">
+                <button id="fontDecrease" aria-label="글자 작게">A-</button>
+                <button id="fontIncrease" aria-label="글자 크게">A+</button>
+              </div>
+              <!-- 자동 목차 -->
+              <div class="toc-container" id="tocContainer"></div>
+              <div class="post-body">[##_article_rep_desc_##]</div>
+
+              <!-- 태그 -->
+              <s_tag_label>
+                <div class="post-tags">
+                  [##_tag_label_rep_##]
+                </div>
+              </s_tag_label>
+
+              <!-- 공유 버튼 -->
+              <div class="share-buttons">
+                <span class="share-label">Share</span>
+                <button class="share-btn" id="shareCopyUrl" title="URL 복사"><i class="fa-solid fa-link"></i></button>
+                <a class="share-btn" id="shareKakao" href="#" title="카카오톡"><i class="fa-solid fa-comment"></i></a>
+                <a class="share-btn share-btn-x" id="shareTwitter" href="#" target="_blank" title="X">X</a>
+                <a class="share-btn" id="shareFacebook" href="#" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a class="share-btn" id="shareLinkedin" href="#" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a class="share-btn" id="shareNaver" href="#" target="_blank" title="네이버 블로그"><span class="share-naver">N</span></a>
+              </div>
+            </div>
+
+            <!-- 이전/다음 글 -->
+            <div class="post-nav-wrap">
+              <s_article_prev>
+                <a href="[##_article_prev_link_##]" class="post-nav-item post-nav-prev">
+                  <span class="nav-label"><i class="fa-solid fa-chevron-left"></i> Prev</span>
+                  <span class="nav-title">[##_article_prev_title_##]</span>
+                </a>
+              </s_article_prev>
+              <s_article_next>
+                <a href="[##_article_next_link_##]" class="post-nav-item post-nav-next">
+                  <span class="nav-label">Next <i class="fa-solid fa-chevron-right"></i></span>
+                  <span class="nav-title">[##_article_next_title_##]</span>
+                </a>
+              </s_article_next>
+            </div>
+
+            <!-- 관련 글 -->
+            <s_article_related>
+              <div class="related-posts">
+                <h3 class="related-title"><i class="fa-regular fa-folder-open"></i> '[##_article_rep_category_##]' Related Articles</h3>
+                <ul class="related-list">
+                  <s_article_related_rep>
+                    <li class="[##_article_related_rep_type_##]">
+                      <a href="[##_article_related_rep_link_##]" class="related-link">
+                        <s_article_related_rep_thumbnail>
+                          <span class="related-thumb">
+                            <img src="[##_article_related_rep_thumbnail_link_##]" alt="" loading="lazy">
+                          </span>
+                        </s_article_related_rep_thumbnail>
+                        <span class="related-text">[##_article_related_rep_title_##]</span>
+                        <span class="related-date">[##_article_related_rep_date_##]</span>
+                      </a>
+                    </li>
+                  </s_article_related_rep>
+                </ul>
+              </div>
+            </s_article_related>
+
+            <!-- 댓글 -->
+            <div class="comment-area">
+              <s_rp>
+                [##_comment_group_##]
+              </s_rp>
+            </div>
+          </article>
+        </s_permalink_article_rep>
+
+      </s_article_rep>
+
+      <!-- ===== 공지사항 ===== -->
+      <s_notice_rep>
+        <s_index_article_rep>
+          <article class="post-card">
+            <div class="post-content">
+              <div class="post-meta">
+                <span class="post-category post-category-notice">공지사항</span>
+                <span class="post-date">[##_notice_rep_date_##]</span>
+              </div>
+              <h2 class="post-title">
+                <a href="[##_notice_rep_link_##]">[##_notice_rep_title_##]</a>
+              </h2>
+              <p class="post-summary">[##_notice_rep_summary_##]</p>
+            </div>
+          </article>
+        </s_index_article_rep>
+
+        <s_permalink_article_rep>
+          <article class="post-card post-single">
+            <div class="post-content">
+              <div class="post-meta">
+                <a href="/notice" class="post-category post-category-notice">공지사항</a>
+                <span class="post-date">[##_notice_rep_date_##]</span>
+              </div>
+              <h2 class="post-title">[##_notice_rep_title_##]</h2>
+              <div class="post-body">[##_notice_rep_desc_##]</div>
+            </div>
+          </article>
+        </s_permalink_article_rep>
+      </s_notice_rep>
+
+      <!-- ===== 보호글 ===== -->
+      <s_article_protected>
+        <s_index_article_rep>
+          <article class="post-card">
+            <div class="post-content">
+              <div class="post-meta">
+                <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
+                <span class="post-date">[##_article_rep_date_##]</span>
+              </div>
+              <h2 class="post-title">
+                <a href="[##_article_rep_link_##]">[##_article_rep_title_##]</a>
+              </h2>
+              <p class="post-summary"><i class="fa-solid fa-lock"></i> 보호되어 있는 글입니다.</p>
+            </div>
+          </article>
+        </s_index_article_rep>
+
+        <s_permalink_article_rep>
+          <article class="post-card post-single">
+            <div class="post-content">
+              <div class="post-meta">
+                <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
+                <span class="post-date">[##_article_rep_date_##]</span>
+              </div>
+              <h2 class="post-title">[##_article_rep_title_##]</h2>
+            </div>
+            <div class="protected-post">
+              <i class="fa-solid fa-lock fa-2x"></i>
+              <p>보호되어 있는 글입니다.<br>내용을 보시려면 비밀번호를 입력하세요.</p>
+              <form class="protected-form" onsubmit="[##_article_dissolve_##]">
+                <input type="password" id="[##_article_password_##]" name="[##_article_password_##]" placeholder="비밀번호">
+                <button type="submit">확인</button>
+              </form>
+            </div>
+          </article>
+        </s_permalink_article_rep>
+      </s_article_protected>
+
+      <!-- ===== 페이지 ===== -->
+      <s_page_rep>
+        <s_permalink_article_rep>
+          <article class="post-card post-single">
+            <div class="post-content">
+              <h2 class="post-title">[##_article_rep_title_##]</h2>
+              <div class="post-body">[##_article_rep_desc_##]</div>
+            </div>
+          </article>
+        </s_permalink_article_rep>
+      </s_page_rep>
+
+      <!-- ===== 태그 페이지 ===== -->
+      <s_tag>
+        <div class="tag-page">
+          <h2 class="list-title"><i class="fa-solid fa-tags"></i> Tags</h2>
+          <div class="tag-cloud tag-cloud-page">
+            <s_tag_rep>
+              <a href="[##_tag_link_##]" class="tag-item [##_tag_class_##]">[##_tag_name_##]</a>
+            </s_tag_rep>
+          </div>
+        </div>
+      </s_tag>
+
+      <!-- ===== 방명록 ===== -->
+      <s_guest>
+        <div class="guestbook">
+          <h2 class="list-title"><i class="fa-regular fa-envelope"></i> Guestbook</h2>
+          [##_guestbook_group_##]
+        </div>
+      </s_guest>
+
+      <!-- ===== 페이징 ===== -->
+      <s_paging>
+        <div class="pagination">
+          <a [##_prev_page_##] class="page-prev [##_no_more_prev_##]">
+            <i class="fa-solid fa-chevron-left"></i> Prev
+          </a>
+          <span class="page-numbers">
+            <s_paging_rep>
+              <a [##_paging_rep_link_##] class="page-num">[##_paging_rep_link_num_##]</a>
+            </s_paging_rep>
+          </span>
+          <a [##_next_page_##] class="page-next [##_no_more_next_##]">
+            Next <i class="fa-solid fa-chevron-right"></i>
+          </a>
+        </div>
+      </s_paging>
+
+      <!-- 광고 하단 -->
+      [##_revenue_list_lower_##]
+
+    </main>
+
+    <!-- ===== 우측 사이드바 ===== -->
+    <aside class="sidebar sidebar-right">
+      <s_sidebar>
+
+        <!-- 달력 -->
+        <s_sidebar_element>
+          <!-- 달력 -->
+          <div class="widget widget-calendar">
+            <h3 class="widget-title"><i class="fa-regular fa-calendar"></i> Calendar</h3>
+            [##_calendar_##]
+          </div>
+        </s_sidebar_element>
+
+        <!-- 최근 포스트 -->
+        <s_sidebar_element>
+          <!-- 최근 글 -->
+          <div class="widget widget-recent-posts">
+            <h3 class="widget-title"><i class="fa-regular fa-file-lines"></i> Recent Posts</h3>
+            <ul class="recent-list">
+              <s_rctps_rep>
+                <li>
+                  <a href="[##_rctps_rep_link_##]">
+                    <span class="recent-title">[##_rctps_rep_title_##]</span>
+                  </a>
+                </li>
+              </s_rctps_rep>
+            </ul>
+          </div>
+        </s_sidebar_element>
+
+        <!-- 최근 댓글 -->
+        <s_sidebar_element>
+          <!-- 최근 댓글 -->
+          <div class="widget widget-recent-comments">
+            <h3 class="widget-title"><i class="fa-regular fa-comment-dots"></i> Recent Comments</h3>
+            <ul class="recent-list">
+              <s_rctrp_rep>
+                <li>
+                  <a href="[##_rctrp_rep_link_##]">
+                    <span class="recent-comment-text">[##_rctrp_rep_desc_##]</span>
+                  </a>
+                </li>
+              </s_rctrp_rep>
+            </ul>
+          </div>
+        </s_sidebar_element>
+
+      </s_sidebar>
+    </aside>
+
+  </div>
+
+  <!-- ===== 푸터 ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>&copy; <a href="[##_blog_link_##]">[##_blogger_##]</a> · Powered by Tistory
+        <!-- 개인정보처리방침 페이지 URL을 본인 블로그에 맞게 수정하세요 -->
+        <a href="/pages/privacy" class="footer-privacy">개인정보처리방침</a>
+      </p>
+      <div class="footer-links">
+        <a href="[##_rss_url_##]" title="RSS"><i class="fa-solid fa-rss"></i></a>
+        <a href="[##_taglog_link_##]" title="Tags"><i class="fa-solid fa-tags"></i></a>
+        <a href="[##_guestbook_link_##]" title="Guestbook"><i class="fa-regular fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 이미지 라이트박스 -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark"></i></button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <!-- 읽기 프로그레스바 -->
+  <div class="reading-progress"><div class="reading-progress-fill" id="readingProgress"></div></div>
+
+  <!-- 맨 위로 버튼 -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <!-- 모바일 사이드바 토글 -->
+  <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Open sidebar">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+</s_t3>
+<script src="./images/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin>
+  <information>
+    <name>DevLog Dark</name>
+    <version>1.0.0</version>
+    <description>Developer-themed 3-column Tistory skin with dark/light mode toggle</description>
+    <license>MIT</license>
+  </information>
+
+  <author>
+    <name>DevLog Dark</name>
+    <homepage></homepage>
+    <email></email>
+  </author>
+
+  <default>
+    <recentEntries>10</recentEntries>
+    <recentComments>3</recentComments>
+    <lengthOfRecentEntry>28</lengthOfRecentEntry>
+    <lengthOfRecentComment>30</lengthOfRecentComment>
+    <recentTrackbacks>0</recentTrackbacks>
+    <expandComment>0</expandComment>
+    <expandTrackback>0</expandTrackback>
+    <contentWidth>720</contentWidth>
+    <showListOnCategory>1</showListOnCategory>
+    <tree>
+      <color>000000</color>
+      <bgColor>ffffff</bgColor>
+      <activeColor>6C5CE7</activeColor>
+      <activeBgColor>1e1e2e</activeBgColor>
+      <labelLength>27</labelLength>
+      <showValue>1</showValue>
+    </tree>
+  </default>
+
+  <variables>
+    <variablegroup name="Design">
+      <variable name="primaryBg" label="Primary Background" type="COLOR" default="#1e1e2e"/>
+      <variable name="accentColor" label="Accent Color" type="COLOR" default="#6C5CE7"/>
+      <variable name="fontFamily" label="Font" type="SELECT" default="Pretendard">
+        {"Pretendard":"Pretendard", "IBM Plex Sans KR":"IBM Plex Sans KR", "Noto Sans KR":"Noto Sans KR"}
+      </variable>
+    </variablegroup>
+  </variables>
+</skin>

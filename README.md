@@ -2,118 +2,141 @@
 
 개발자 블로그를 위한 무료 티스토리 커스텀 스킨
 
-Free developer-themed Tistory blog skin with dark/light mode
-
 <!-- 스크린샷 추가 예정 -->
 
-## Features
+## 주요 기능
 
-- **Dark / Light mode** toggle (saved in browser)
-- **3-column fixed layout** (sidebar / content / sidebar)
-- **Developer theme** — terminal prompt `>_`, macOS-style code blocks
-- **Auto TOC** — generated from h2/h3 headings
-- **Code block Copy button** + macOS window dots (red/yellow/green)
-- **Image lightbox** — click to zoom
-- **Share buttons** — URL copy, KakaoTalk, X, Facebook, LinkedIn, Naver Blog
-- **HOT / NEW badges** — auto-detected from comment count and post date
-- **Visitor line graph** — uses Tistory's built-in `window.chartData`
-- **SVG cat mouse follower** — cheese cat with eye tracking and walk/sleep animation
-- **Keyboard shortcuts** — `/` search, `t` theme toggle
-- **Font size controls** — A- / A+ buttons
-- **Print-friendly styles**
-- **Breadcrumb navigation**
-- **Prev/Next post + Related articles**
+### 디자인
+- **다크 / 라이트 모드** 전환 (브라우저에 설정 자동 저장)
+- **3컬럼 고정 레이아웃** (좌측 사이드바 / 본문 / 우측 사이드바)
+- **개발자 테마** — 터미널 프롬프트 `>_`, 맥북 스타일 코드블록
 
-## Quick Install
+### 글 목록
+- 가로형 카드 (제목 + 요약 + 카테고리/날짜 + 우측 썸네일)
+- **HOT 뱃지** — 댓글 5개 이상인 글에 자동 표시
+- **NEW 뱃지** — 7일 이내 작성된 글에 자동 표시
+- 카드 전체 영역 클릭 가능, 호버 시 보라색 세로 바 표시
 
-### Method 1: ZIP Upload (Recommended)
+### 본문 페이지
+- **자동 목차(TOC)** — h2/h3 제목 기반 자동 생성
+- **코드블록 Copy 버튼** + 맥북 윈도우 UI (빨/노/초 원)
+- **이미지 라이트박스** — 클릭하면 전체화면 확대 (ESC로 닫기)
+- **글자 크기 조절** — A- / A+ 버튼
+- **브레드크럼** — `Home / 카테고리` 경로 표시
+- **공유 버튼** — URL 복사, 카카오톡, X, Facebook, LinkedIn, 네이버 블로그
+- **이전/다음 글** + **관련 글** (같은 카테고리 기반)
 
-1. Download `devlog-dark.zip` from this repo
-2. Go to **Tistory Admin > Design > Skin > Add Skin**
-3. Upload the ZIP file
-4. Apply the skin
-5. Configure sidebar widgets (see below)
+### 사이드바
+- **프로필** — 이미지, 이름, 설명, SNS 아이콘 (URL에서 플랫폼 자동 감지)
+- **방문자 꺾은선 그래프** — 티스토리 내장 데이터 자동 연동
+- **방문자 수** (Yesterday / Today / Total)
+- 검색, 카테고리 (항상 펼침), 달력, 최근 글, 최근 댓글
 
-### Method 2: Manual
+### 기타
+- **치즈 고양이** 마우스 팔로워 (눈동자 추적, 걷기/잠자기 모션)
+- **키보드 단축키** — `/` 검색, `t` 테마 전환
+- **읽기 프로그레스바** (하단)
+- **Back to Top** 버튼
+- **프린트 스타일** — Ctrl+P 시 본문만 깔끔하게 출력
 
-1. **Admin > Design > Skin Edit > HTML Edit**
-2. Paste `skin.html` into HTML tab
-3. Paste `style.css` into CSS tab
-4. Upload `index.xml` and `images/script.js` via File Upload tab
-5. Click Apply
+---
 
-## Sidebar Configuration
+## 설치 방법
 
-After applying, go to **Admin > Design > Sidebar**:
+### 방법 1: ZIP 업로드 (추천)
 
-**Left sidebar:**
-1. Profile
-2. Search
-3. Categories
-4. Visitor Stats
+1. 이 레포에서 `devlog-dark.zip` 파일 다운로드
+2. 티스토리 **관리자 > 꾸미기 > 스킨 변경 > 스킨 등록** 으로 이동
+3. ZIP 파일 업로드
+4. 스킨 적용
+5. 아래 사이드바 배치 참고
 
-**Right sidebar:**
-1. Calendar
-2. Recent Posts
-3. Recent Comments
+### 방법 2: 수동 적용
 
-## Customization
+1. 티스토리 **관리자 > 꾸미기 > 스킨 편집 > HTML 편집** 진입
+2. **HTML 탭**에 `skin.html` 내용 전체 붙여넣기
+3. **CSS 탭**에 `style.css` 내용 전체 붙여넣기
+4. **파일업로드 탭**에서 `index.xml`, `images/script.js` 업로드
+5. **적용** 클릭
 
-### Change accent color
+---
 
-Edit the top of `style.css`:
+## 사이드바 위젯 배치
+
+스킨 적용 후 **관리자 > 꾸미기 > 사이드바**에서 순서를 맞춰주세요.
+
+**좌측 사이드바 (사이드바 1)**
+| 순서 | 위젯 |
+|------|------|
+| 1 | 프로필 |
+| 2 | 검색 |
+| 3 | 카테고리 |
+| 4 | 방문자 통계 |
+
+**우측 사이드바 (사이드바 2)**
+| 순서 | 위젯 |
+|------|------|
+| 1 | 달력 |
+| 2 | 최근 글 |
+| 3 | 최근 댓글 |
+
+---
+
+## 커스터마이징
+
+### 색상 변경
+
+`style.css` 상단의 색상 값을 수정하면 전체 테마 색상이 바뀌어요:
 
 ```css
---accent: #7c3aed;        /* Main purple */
---accent-light: #a78bfa;  /* Light purple */
+--accent: #7c3aed;        /* 메인 보라색 → 원하는 색으로 */
+--accent-light: #a78bfa;  /* 밝은 보라색 */
 ```
 
-### SNS icons
+### SNS 아이콘
 
-Add links in **Admin > Design > Sidebar > Links**. The script auto-detects platforms from URLs:
+티스토리 **관리자 > 꾸미기 > 사이드바 > 링크**에서 URL을 추가하면, 스크립트가 URL에서 플랫폼을 자동 감지해서 아이콘을 매핑해요:
 
-- `linkedin.com` → LinkedIn icon
-- `github.com` → GitHub icon
-- `instagram.com` → Instagram icon
-- `facebook.com` → Facebook icon
-- Others → default link icon
+- `linkedin.com` → LinkedIn 아이콘
+- `github.com` → GitHub 아이콘
+- `instagram.com` → Instagram 아이콘
+- `facebook.com` → Facebook 아이콘
+- 그 외 → 기본 링크 아이콘
 
-### Disable cat follower
+### 고양이 끄기
 
-Remove the `SVG Cat Character Follower` section from `images/script.js`.
+`images/script.js`에서 `SVG Cat Character Follower` 주석을 찾아서 해당 블록을 삭제하면 돼요.
 
-### Privacy policy link
+### 개인정보처리방침 링크
 
-Update the footer in `skin.html`:
+`skin.html` 하단 푸터에서 URL을 본인 페이지로 수정:
 
 ```html
-<a href="/pages/your-page" class="footer-privacy">Privacy Policy</a>
+<a href="/pages/본인-페이지-경로" class="footer-privacy">개인정보처리방침</a>
 ```
 
-### Add Google Tag Manager
+### Google Tag Manager / 네이버 서치어드바이저
 
-Add your GTM code to `<head>` in `skin.html`:
+`skin.html`의 `<head>` 안에 본인 코드를 추가하세요. 자리표시 주석이 있어요.
 
-```html
-<head>
-  <script>...your GTM code...</script>
-```
+---
 
-## File Structure
+## 파일 구조
 
 ```
-skin.html           # Main HTML template
-style.css           # Styles (dark/light mode via CSS variables)
-index.xml           # Skin metadata
-images/script.js    # All JS functionality
-devlog-dark.zip     # Ready-to-upload package
+skin.html           # HTML 템플릿
+style.css           # CSS 스타일 (다크/라이트 모드 변수 포함)
+index.xml           # 스킨 설정 메타데이터
+images/script.js    # JS 기능 (테마 토글, TOC, 고양이 등)
+devlog-dark.zip     # 바로 업로드 가능한 패키지
+preview.html        # 로컬 프리뷰 (글 목록)
+preview-post.html   # 로컬 프리뷰 (본문)
 ```
 
-## Browser Support
+## 브라우저 지원
 
-- Chrome, Edge, Safari, Firefox (latest)
-- Mobile responsive (horizontal scroll on small screens)
+Chrome, Edge, Safari, Firefox 최신 버전
 
-## License
+## 라이선스
 
-MIT — free for personal and commercial use.
+MIT — 개인/상업적 용도 모두 무료로 사용 가능해요.

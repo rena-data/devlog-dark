@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="dark">
 <head>
+  <!-- Google Tag Manager: 본인 GTM ID로 교체하세요 -->
   <!--
-    [선택] 아래에 본인의 Google Tag Manager / 네이버 서치어드바이저 / AdSense 코드를 넣으세요.
-    예시:
-    <script>GTM 코드</script>
-    <meta name="naver-site-verification" content="본인 인증코드" />
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
   -->
+
+  <!-- Naver Search Advisor: 본인 인증코드로 교체하세요 -->
+  <!-- <meta name="naver-site-verification" content="본인_인증코드" /> -->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +23,11 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body id="[##_body_id_##]">
+<!-- Google Tag Manager (noscript): 본인 GTM ID로 교체하세요 -->
+<!--
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+-->
 <s_t3>
 
   <!-- ===== 헤더 ===== -->
@@ -39,6 +49,9 @@
     </div>
   </header>
 
+  <!-- 읽기 프로그레스바 (헤더 바로 아래) -->
+  <div class="reading-progress"><div class="reading-progress-fill" id="readingProgress"></div></div>
+
   <!-- ===== 메인 레이아웃 (3컬럼) ===== -->
   <div class="layout">
 
@@ -57,6 +70,9 @@
               </div>
               <strong class="profile-name">[##_blogger_##]</strong>
               <p class="profile-desc">[##_desc_##]</p>
+              <div class="profile-subscribe">
+                <div data-tistory-react-app="SubscribeAndNotify"></div>
+              </div>
               <div class="profile-links">
                 <s_link_rep>
                   <a href="[##_link_url_##]" target="_blank" title="[##_link_site_##]"><i class="fa-solid fa-link"></i></a>
@@ -137,15 +153,11 @@
         </s_cover_group>
       </s_cover>
 
-      <!-- 홈 타이틀 -->
-      <div class="index_title">
-        <h2 class="list-title">전체 글</h2>
-      </div>
-
-      <!-- 리스트 타이틀 (카테고리/검색) -->
+      <!-- 리스트 타이틀 -->
       <s_list>
         <div class="list-header">
           <h2 class="list-title">[##_list_conform_##] <span class="list-count">([##_list_count_##])</span></h2>
+          <hr class="list-divider">
         </div>
       </s_list>
 
@@ -182,6 +194,12 @@
         <!-- 본문 뷰 (퍼머링크) -->
         <s_permalink_article_rep>
           <article class="post-card post-single">
+            <!-- 자동 목차 trigger (본문 우측 중앙) -->
+            <div class="toc-trigger" id="tocTrigger">
+              <div class="toc-trigger-btn"><i class="fa-solid fa-list-ul"></i></div>
+            </div>
+            <!-- 자동 목차 panel (별도 fixed) -->
+            <div class="toc-container" id="tocContainer"></div>
             <div class="post-content">
               <!-- 브레드크럼 -->
               <nav class="breadcrumb">
@@ -192,7 +210,14 @@
               <div class="post-meta">
                 <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
                 <span class="post-date">[##_article_rep_date_##]</span>
-                [##_s_ad_isolation_##]
+                <div class="post-manage" id="postManage">
+                  <button class="post-manage-btn" id="postManageBtn" aria-label="글 관리"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                  <div class="post-manage-menu" id="postManageMenu">
+                    <a id="postEditLink" href="#"><i class="fa-solid fa-pen"></i> 수정</a>
+                    <a id="postPrivateLink" href="#"><i class="fa-solid fa-lock"></i> 비공개로 변경</a>
+                    <a id="postDeleteLink" href="#" class="post-manage-danger"><i class="fa-solid fa-trash"></i> 삭제</a>
+                  </div>
+                </div>
               </div>
               <h2 class="post-title">[##_article_rep_title_##]</h2>
               <!-- 글자 크기 조절 -->
@@ -200,8 +225,6 @@
                 <button id="fontDecrease" aria-label="글자 작게">A-</button>
                 <button id="fontIncrease" aria-label="글자 크게">A+</button>
               </div>
-              <!-- 자동 목차 -->
-              <div class="toc-container" id="tocContainer"></div>
               <div class="post-body">[##_article_rep_desc_##]</div>
 
               <!-- 태그 -->
@@ -412,7 +435,7 @@
         <s_sidebar_element>
           <!-- 최근 글 -->
           <div class="widget widget-recent-posts">
-            <h3 class="widget-title"><i class="fa-regular fa-file-lines"></i> Recent Posts</h3>
+            <h3 class="widget-title"><a href="/" class="widget-title-link"><i class="fa-regular fa-file-lines"></i> Recent Posts</a></h3>
             <ul class="recent-list">
               <s_rctps_rep>
                 <li>
@@ -451,8 +474,7 @@
   <footer class="footer">
     <div class="footer-inner">
       <p>&copy; <a href="[##_blog_link_##]">[##_blogger_##]</a> · Powered by Tistory
-        <!-- 개인정보처리방침 페이지 URL을 본인 블로그에 맞게 수정하세요 -->
-        <a href="/pages/privacy" class="footer-privacy">개인정보처리방침</a>
+        <a href="/pages/본인-개인정보처리방침-페이지-경로" class="footer-privacy">개인정보처리방침</a>
       </p>
       <div class="footer-links">
         <a href="[##_rss_url_##]" title="RSS"><i class="fa-solid fa-rss"></i></a>
@@ -468,8 +490,6 @@
     <img id="lightboxImg" src="" alt="">
   </div>
 
-  <!-- 읽기 프로그레스바 -->
-  <div class="reading-progress"><div class="reading-progress-fill" id="readingProgress"></div></div>
 
   <!-- 맨 위로 버튼 -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top">

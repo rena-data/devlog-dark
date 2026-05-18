@@ -125,7 +125,7 @@ ul, ol { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1260px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 24px;
   height: 56px;
@@ -163,6 +163,21 @@ ul, ol { list-style: none; }
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.blog-menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.blog-menu ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
 }
 
 .blog-menu a {
@@ -208,9 +223,9 @@ ul, ol { list-style: none; }
 /* ===== Layout ===== */
 .layout {
   display: grid;
-  grid-template-columns: 220px 720px 260px;
+  grid-template-columns: 220px 960px 260px;
   gap: 20px;
-  width: 1260px;
+  width: 1500px;
   margin: 0 auto;
   padding: 24px 20px;
 }
@@ -238,6 +253,15 @@ ul, ol { list-style: none; }
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-light);
+}
+
+.widget-title-link {
+  color: inherit;
+  transition: color 0.2s;
+}
+
+.widget-title-link:hover {
+  color: var(--accent-light);
 }
 
 .widget-title i {
@@ -376,52 +400,67 @@ ul, ol { list-style: none; }
 }
 
 /* ===== Category Widget ===== */
-.widget-category .tt_category { font-size: 0.85rem; }
+.widget-category { font-size: 0.85rem; }
 
-.widget-category .tt_category ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* Force all subcategories expanded */
+.widget-category div[id$="_children"] {
+  display: block !important;
 }
 
-.widget-category .tt_category li {
-  margin: 0;
-  padding: 3px 0;
+/* Reset Tistory inline background-color (#ffffff) on all tables */
+.widget-category table,
+.widget-category table table {
+  background-color: transparent !important;
 }
 
-.widget-category .tt_category a {
-  display: inline;
-  padding: 3px 6px;
-  color: var(--text-secondary);
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  line-height: 1.5;
-  transition: all 0.15s;
+/* Reset Tistory inline text color (#000000) */
+.widget-category div[id^="text_"] {
+  color: var(--text-secondary) !important;
 }
 
-.widget-category .tt_category a:hover {
-  color: var(--text-primary);
-  background: var(--bg-hover);
-}
-
-.widget-category .tt_category a.active,
-.widget-category .tt_category a.link_active {
-  color: var(--accent-light);
-  background: var(--accent-bg);
-  font-weight: 600;
-}
-
-.widget-category .tt_category .c_cnt {
+/* Category count */
+.widget-category .c_cnt {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
   padding-left: 2px;
 }
 
-.widget-category .tt_category > ul > li > ul {
-  margin-left: 16px;
-  margin-top: 0;
-  border-left: 2px solid var(--border-light);
-  padding-left: 6px;
+/* Clickable category rows — cursor pointer */
+.widget-category td.branch3,
+.widget-category td[onclick],
+.widget-category table[onclick] {
+  cursor: pointer;
+}
+
+/* Hover effect on category items */
+.widget-category td.branch3:hover div[id^="text_"] {
+  color: var(--text-primary) !important;
+}
+
+/* Hide Tistory tree icons (expand/collapse arrows, folder images) */
+.widget-category .ib img,
+.widget-category img[src*="tree/base/"],
+.widget-category img[src*="new_ico"] {
+  display: none !important;
+}
+
+/* Clean up table spacing */
+.widget-category #treeComponent {
+  width: 100% !important;
+}
+
+.widget-category table {
+  border-collapse: collapse;
+}
+
+.widget-category td.ib {
+  width: 0 !important;
+  padding: 0 !important;
+}
+
+/* Subcategory indent */
+.widget-category div[id$="_children"] table td.ib {
+  width: 12px !important;
 }
 
 /* ===== Main Content ===== */
@@ -437,6 +476,11 @@ ul, ol { list-style: none; }
   overflow: hidden;
   margin-bottom: 20px;
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.post-card.post-single {
+  overflow: visible;
+  position: relative;
 }
 
 .post-card:hover {
@@ -495,13 +539,13 @@ ul, ol { list-style: none; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 130px;
+  width: 160px;
   padding: 0 0 0 16px;
 }
 
 .post-thumb-side img {
-  width: 130px;
-  height: 130px;
+  width: 160px;
+  height: 160px;
   object-fit: cover;
   border-radius: var(--radius);
   transition: transform 0.3s;
@@ -570,6 +614,87 @@ ul, ol { list-style: none; }
   margin-bottom: 12px;
 }
 
+/* Post manage dropdown (날짜 옆) */
+.post-manage {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.post-manage-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.post-manage-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+  background: var(--bg-hover);
+}
+
+.post-manage-menu {
+  display: none;
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  min-width: 160px;
+  padding: 6px 0;
+  white-space: nowrap;
+}
+
+.post-manage-menu.open {
+  display: block;
+}
+
+.post-manage-menu a {
+  display: block;
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+
+.post-manage-menu a:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.post-manage-menu a i {
+  width: 16px;
+  margin-right: 8px;
+  text-align: center;
+}
+
+.post-manage-menu a.post-manage-danger {
+  color: var(--red);
+}
+
+.post-manage-menu a.post-manage-danger:hover {
+  background: rgba(248, 81, 73, 0.1);
+  color: var(--red);
+}
+
+/* Hide Tistory's built-in 3-dot button (s_ad_isolation) */
+.post-meta .article_manage {
+  display: none !important;
+}
+
 .post-title a {
   color: var(--text-primary);
 }
@@ -583,6 +708,58 @@ ul, ol { list-style: none; }
   color: var(--text-secondary);
   line-height: 1.8;
   word-break: keep-all;
+}
+
+.post-body table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.post-body table th,
+.post-body table td {
+  word-break: keep-all;
+  white-space: normal;
+}
+
+/* Dark mode: override Tistory editor inline styles in post body */
+[data-theme="dark"] .post-body [style] {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .post-body a[style] {
+  color: var(--text-link) !important;
+}
+
+/* Dark mode: code blocks — override inline background/color */
+[data-theme="dark"] .post-body pre[style] {
+  background-color: var(--bg-code) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .post-body pre[style] code,
+[data-theme="dark"] .post-body pre[style] span {
+  color: inherit !important;
+}
+
+/* Dark mode: tables — override inline backgrounds and colors */
+[data-theme="dark"] .post-body table,
+[data-theme="dark"] .post-body table tr,
+[data-theme="dark"] .post-body table td {
+  background-color: transparent !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .post-body table th {
+  background-color: var(--bg-hover) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Hide "카테고리의 다른 글" (중복 — Related Articles 사용) */
+.another_category {
+  display: none !important;
 }
 
 .post-body h2 {
@@ -635,11 +812,12 @@ ul, ol { list-style: none; }
 .post-body pre,
 .post-body code {
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  font-size: 0.88em;
+  font-size: 0.95em;
 }
 
 .post-body pre {
-  background: var(--bg-code);
+  background: var(--bg-code) !important;
+  color: var(--text-secondary) !important;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 32px 16px 16px;
@@ -1284,7 +1462,7 @@ ul, ol { list-style: none; }
 }
 
 .footer-inner {
-  max-width: 1260px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 24px;
   display: flex;
@@ -1365,7 +1543,7 @@ ul, ol { list-style: none; }
 }
 
 /* ===== Small screen: horizontal scroll to preserve layout ===== */
-@media (max-width: 1280px) {
+@media (max-width: 1540px) {
   body {
     overflow-x: auto;
   }
@@ -1396,14 +1574,14 @@ ul, ol { list-style: none; }
   }
 }
 
-/* ===== Reading Progress Bar (bottom) ===== */
+/* ===== Reading Progress Bar (below header) ===== */
 .reading-progress {
-  position: fixed;
-  bottom: 0;
+  position: sticky;
+  top: 56px;
   left: 0;
   width: 100%;
   height: 3px;
-  z-index: 99;
+  z-index: 100;
   background: transparent;
 }
 
@@ -1623,18 +1801,68 @@ ul, ol { list-style: none; }
   border-color: var(--accent-border);
 }
 
-/* ===== TOC (Table of Contents) ===== */
-.toc-container {
-  background: var(--bg-hover);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
-  padding: 14px 18px;
-  margin-bottom: 20px;
+/* ===== TOC (Table of Contents) — Hover Trigger ===== */
+.toc-trigger {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 91;
   display: none;
 }
+
+.toc-trigger.toc-visible {
+  display: block;
+}
+
+.toc-trigger-btn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+}
+
+.toc-trigger-btn:hover {
+  color: var(--accent-light);
+  background: var(--bg-hover);
+}
+
+.toc-container {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  width: 240px;
+  max-height: 50vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-lg);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.toc-container.toc-panel-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
 .toc-container.has-items { display: block; }
+
 .toc-title {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -1650,15 +1878,24 @@ ul, ol { list-style: none; }
   padding: 3px 0;
 }
 .toc-list a {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   transition: color 0.15s;
+  line-height: 1.4;
 }
 .toc-list a:hover {
   color: var(--accent-light);
 }
+.toc-list li.toc-active > a {
+  color: var(--accent-light);
+  font-weight: 600;
+}
 .toc-list .toc-h3 {
   padding-left: 14px;
+}
+
+@media (max-width: 768px) {
+  .toc-trigger { display: none !important; }
 }
 
 /* ===== Lightbox ===== */
@@ -1763,6 +2000,12 @@ ul, ol { list-style: none; }
 
 .list-header {
   margin-bottom: 20px;
+}
+
+.list-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 12px 0 0;
 }
 
 .list-title {
@@ -1925,6 +2168,41 @@ ul, ol { list-style: none; }
   font-weight: 600;
 }
 
+/* ===== Tistory Namecard (블로그 소개 박스) ===== */
+.comment-area .tt_box_namecard {
+  min-height: auto !important;
+  padding: 16px !important;
+  margin: 12px 0 !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+
+.comment-area .tt_box_namecard .tt_cont {
+  padding: 12px 0 0 16px !important;
+}
+
+.comment-area .tt_box_namecard .tt_tit_cont,
+.comment-area .tt_box_namecard .tt_tit_cont a {
+  font-size: 15px !important;
+  color: var(--text-primary) !important;
+}
+
+.comment-area .tt_box_namecard .tt_desc {
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+}
+
+.comment-area .tt_box_namecard .tt_btn_subscribe {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+}
+
+.comment-area .tt_box_namecard .tt_wrap_thumb img {
+  border-radius: 50%;
+}
+
 /* ===== Tistory Comment Group Override ===== */
 .comment-area .tt_comment_cont { margin: 0; }
 
@@ -1992,11 +2270,12 @@ ul, ol { list-style: none; }
 }
 
 .comment-area .tt_btn_submit,
-.comment-area .tt_btn_register {
+.comment-area .tt_btn_register,
+.comment-area .tt-btn_register {
   padding: 8px 20px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
+  background: var(--accent) !important;
+  color: #fff !important;
+  border: 1px solid var(--accent) !important;
   border-radius: var(--radius-sm);
   font-family: inherit;
   font-size: 0.87rem;
@@ -2005,8 +2284,89 @@ ul, ol { list-style: none; }
 }
 
 .comment-area .tt_btn_submit:hover,
-.comment-area .tt_btn_register:hover {
-  background: var(--accent-light);
+.comment-area .tt_btn_register:hover,
+.comment-area .tt-btn_register:hover {
+  background: var(--accent-light) !important;
+  border-color: var(--accent-light) !important;
+}
+
+/* Tistory React comment — dark mode full override */
+[data-theme="dark"] .comment-area .tt-comment-cont,
+[data-theme="dark"] .comment-area .tt-comment-cont * {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .comment-area .tt-comment-cont a {
+  color: var(--text-link) !important;
+}
+
+[data-theme="dark"] .comment-area .tt-box-total {
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .comment-area .tt-box-total a,
+[data-theme="dark"] .comment-area .tt-box-total .tt_txt_g,
+[data-theme="dark"] .comment-area .tt-box-total .tt_num_g {
+  color: var(--text-primary) !important;
+}
+
+/* Comment user names */
+[data-theme="dark"] .comment-area .tt-link-comment .tt_tit_g,
+[data-theme="dark"] .comment-area .tt-link-comment strong,
+[data-theme="dark"] .comment-area .tt_link_user {
+  color: var(--text-primary) !important;
+}
+
+/* Comment body text */
+[data-theme="dark"] .comment-area .tt-link-comment .tt_desc_g,
+[data-theme="dark"] .comment-area .tt_desc_reply,
+[data-theme="dark"] .comment-area .tt_p_content {
+  color: var(--text-secondary) !important;
+}
+
+/* Comment date */
+[data-theme="dark"] .comment-area .tt-link-comment .tt_date,
+[data-theme="dark"] .comment-area .tt_date {
+  color: var(--text-muted) !important;
+}
+
+/* Comment meta */
+[data-theme="dark"] .comment-area .tt-wrap-link-comment .tt_txt_g {
+  color: var(--text-muted) !important;
+}
+
+/* Comment list borders */
+[data-theme="dark"] .comment-area .tt-item-reply,
+[data-theme="dark"] .comment-area .tt-list-reply-comment > li {
+  border-color: var(--border-light) !important;
+}
+
+/* Comment write area */
+[data-theme="dark"] .comment-area .tt-box-textarea .tt-inner-g {
+  background: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .comment-area .tt-area-write .tt-box-account input {
+  background: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .comment-area .tt-area-write .tt-box-account input::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Namecard in comment area */
+[data-theme="dark"] .comment-area .tt_box_namecard,
+[data-theme="dark"] .comment-area .tt_box_namecard * {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .comment-area .tt_box_namecard .tt_tit_cont,
+[data-theme="dark"] .comment-area .tt_box_namecard .tt_tit_cont a {
+  color: var(--text-primary) !important;
 }
 
 /* ===== Guestbook Override ===== */
@@ -2020,18 +2380,7 @@ ul, ol { list-style: none; }
 
 /* ===== Tistory default overrides ===== */
 #tt-body-page .post-body img { cursor: default; }
-.another_category {
-  border-color: var(--border) !important;
-  background: var(--bg-card) !important;
-  border-radius: var(--radius) !important;
-}
-.another_category h4 {
-  color: var(--text-primary) !important;
-  background: var(--bg-hover) !important;
-  border-radius: var(--radius) var(--radius) 0 0 !important;
-}
-.another_category a { color: var(--text-link) !important; }
-.another_category table { border-color: var(--border-light) !important; }
+/* "카테고리의 다른글" — hidden (Related Articles와 중복) */
 
 /* Tistory tag label */
 .post-tags .tag_label a,
@@ -2057,7 +2406,41 @@ ul, ol { list-style: none; }
 /* Tistory subscription/share buttons */
 .area_etc { padding: 0 24px; }
 
+/* Profile subscribe button */
+.profile-subscribe {
+  margin: 10px 0 4px;
+  text-align: center;
+}
+
 /* Hide Tistory default elements that conflict */
 .container_postbtn { border-color: var(--border) !important; }
 .container_postbtn .btn_post { color: var(--text-secondary) !important; }
 .container_postbtn .btn_post:hover { color: var(--accent-light) !important; }
+
+/* Tistory post button dropdowns (share, manage) */
+.layer_post {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-radius: var(--radius) !important;
+}
+
+.layer_post .btn_mark {
+  color: var(--text-secondary) !important;
+}
+
+.layer_post .btn_mark:hover {
+  background: var(--bg-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Tistory toolbar tooltip */
+.layer_tooltip {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.layer_tooltip .desc_g {
+  color: var(--text-secondary) !important;
+}

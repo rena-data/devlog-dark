@@ -170,6 +170,8 @@
   // ===== Profile Links — auto icon mapping =====
   var profileLinks = document.querySelectorAll('.profile-links a');
   var iconMap = {
+    newpost: 'fa-solid fa-pen-to-square',
+    manage: 'fa-solid fa-gear',
     linkedin: 'fa-brands fa-linkedin-in',
     github: 'fa-brands fa-github',
     instagram: 'fa-brands fa-instagram',
@@ -224,6 +226,61 @@
     });
   }
 
+  // ===== Post Manage Dropdown =====
+  var manageBtn = document.getElementById('postManageBtn');
+  var manageMenu = document.getElementById('postManageMenu');
+  var editLink = document.getElementById('postEditLink');
+  var manageLink = document.getElementById('postManageLink');
+
+  if (manageBtn && manageMenu) {
+    // Get entry ID from Tistory's config
+    var entryInfo = window.T && window.T.entryInfo;
+    var entryId = entryInfo ? entryInfo.entryId : null;
+    var blogUrl = window.TistoryBlog ? window.TistoryBlog.url : '';
+    var isOwner = window.T && window.T.config && window.T.config.ROLE === 'owner';
+
+    if (isOwner && entryId) {
+      if (editLink) editLink.href = blogUrl + '/manage/newpost/' + entryId + '?type=post';
+
+      var privateLink = document.getElementById('postPrivateLink');
+      if (privateLink) {
+        privateLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (confirm('이 글을 비공개로 변경하시겠습니까?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', blogUrl + '/manage/post/visibility.json', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () { location.reload(); };
+            xhr.send('entryId=' + entryId + '&visibility=0');
+          }
+        });
+      }
+
+      var deleteLink = document.getElementById('postDeleteLink');
+      if (deleteLink) {
+        deleteLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (confirm('이 글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+            window.location.href = blogUrl + '/manage/post/delete/' + entryId;
+          }
+        });
+      }
+
+      manageBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        manageMenu.classList.toggle('open');
+      });
+
+      document.addEventListener('click', function () {
+        manageMenu.classList.remove('open');
+      });
+    } else {
+      // Hide manage button for non-owners
+      var postManage = document.getElementById('postManage');
+      if (postManage) postManage.style.display = 'none';
+    }
+  }
+
   // ===== Single Post Body (shared ref) =====
   var singleBody = document.querySelector('.post-single .post-body');
 
@@ -272,7 +329,7 @@
     })(listCards[lc]);
   }
 
-  // ===== TOC Auto Generation =====
+  // ===== TOC Auto Generation + Floating =====
   if (singleBody) {
     var tocContainer = document.getElementById('tocContainer');
     var headings = singleBody.querySelectorAll('h2, h3');
@@ -283,11 +340,75 @@
         var id = 'toc-' + ti;
         h.id = id;
         var cls = h.tagName === 'H3' ? ' class="toc-h3"' : '';
-        tocHtml += '<li' + cls + '><a href="#' + id + '">' + h.textContent + '</a></li>';
+        tocHtml += '<li' + cls + ' data-toc-id="' + id + '"><a href="#' + id + '">' + h.textContent + '</a></li>';
       }
       tocHtml += '</ol>';
       tocContainer.innerHTML = tocHtml;
       tocContainer.classList.add('has-items');
+
+      // TOC trigger (화면 중앙 고정) + panel (사이드바 하단 기준)
+      var tocTrigger = document.getElementById('tocTrigger');
+      var postSingle = document.querySelector('.post-card.post-single');
+      var sidebarRight = document.querySelector('.sidebar-right');
+      var tocItems = tocContainer.querySelectorAll('.toc-list li');
+      var tocHideTimer = null;
+
+      function positionToc() {
+        if (!tocTrigger || !postSingle) return;
+        var contentRect = postSingle.getBoundingClientRect();
+        // 트리거 아이콘: 본문 우측 라인, 화면 세로 중앙
+        tocTrigger.style.left = (contentRect.right - 18) + 'px';
+
+        // 패널: 트리거 우측, 화면 세로 중앙 (CSS top:50% + translateY(-50%))
+        tocContainer.style.left = (contentRect.right + 20) + 'px';
+      }
+
+      // 호버로 패널 열기/닫기
+      function showPanel() {
+        clearTimeout(tocHideTimer);
+        tocContainer.classList.add('toc-panel-open');
+      }
+      function hidePanel() {
+        tocHideTimer = setTimeout(function () {
+          tocContainer.classList.remove('toc-panel-open');
+        }, 200);
+      }
+
+      tocTrigger.addEventListener('mouseenter', showPanel);
+      tocTrigger.addEventListener('mouseleave', hidePanel);
+      tocContainer.addEventListener('mouseenter', showPanel);
+      tocContainer.addEventListener('mouseleave', hidePanel);
+
+      positionToc();
+      window.addEventListener('resize', positionToc);
+
+      window.addEventListener('scroll', function () {
+        var bodyRect = singleBody.getBoundingClientRect();
+        if (tocTrigger) {
+          if (bodyRect.top < 200 && bodyRect.bottom > 300) {
+            tocTrigger.classList.add('toc-visible');
+            positionToc();
+          } else {
+            tocTrigger.classList.remove('toc-visible');
+            tocContainer.classList.remove('toc-panel-open');
+          }
+        }
+
+        // Highlight active heading
+        var activeIdx = -1;
+        for (var si = 0; si < headings.length; si++) {
+          if (headings[si].getBoundingClientRect().top <= 100) {
+            activeIdx = si;
+          }
+        }
+        for (var ai = 0; ai < tocItems.length; ai++) {
+          if (ai === activeIdx) {
+            tocItems[ai].classList.add('toc-active');
+          } else {
+            tocItems[ai].classList.remove('toc-active');
+          }
+        }
+      });
     }
   }
 
@@ -383,13 +504,12 @@
   if (kakaoBtn) {
     kakaoBtn.addEventListener('click', function (e) {
       e.preventDefault();
+      var kakaoUrl = 'https://sharer.kakao.com/talk/friends/picker/link?url=' + pageUrl + '&app_key=javascript_key';
+      // Fallback: use Kakao link scheme or simple share URL
       if (navigator.share) {
         navigator.share({ title: document.title, url: window.location.href });
       } else {
-        // 카카오톡 미지원 환경: URL 복사로 대체
-        navigator.clipboard.writeText(window.location.href).then(function () {
-          alert('링크가 복사되었습니다. 카카오톡에 붙여넣기 해주세요!');
-        });
+        window.open('https://accounts.kakao.com/login?continue=https://sharer.kakao.com/talk/friends/picker/link?url=' + pageUrl, '_blank', 'width=600,height=500');
       }
     });
   }
@@ -483,10 +603,18 @@
     var hlL = catEl.querySelector('.cat-highlight-l');
     var hlR = catEl.querySelector('.cat-highlight-r');
 
-    var catX = 0, catY = 0, catTX = 0, catTY = 0;
+    var catX = -80, catY = -80, catTX = -80, catTY = -80;
     var walkFrame = 0, walkTimer = 0, catIdle = false;
+    var catHasMoved = false;
 
+    catEl.style.display = 'none';
     document.addEventListener('mousemove', function (e) {
+      if (!catHasMoved) {
+        catHasMoved = true;
+        catX = e.clientX;
+        catY = e.clientY;
+        catEl.style.display = '';
+      }
       catTX = e.clientX;
       catTY = e.clientY;
     });

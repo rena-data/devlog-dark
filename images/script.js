@@ -302,13 +302,13 @@
     (function (pre) {
       var btn = document.createElement('button');
       btn.className = 'code-copy-btn';
-      btn.textContent = 'Copy';
+      btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
       btn.addEventListener('click', function () {
         var code = pre.querySelector('code') || pre;
         var text = code.textContent;
         navigator.clipboard.writeText(text).then(function () {
-          btn.textContent = 'Copied!';
-          setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+          setTimeout(function () { btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy'; }, 1500);
         });
       });
       pre.style.position = 'relative';

@@ -25,7 +25,7 @@
   --accent-border: rgba(124, 58, 237, 0.3);
 
   --border: #30363d;
-  --border-light: #21262d;
+  --border-light: #2d333b;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
 
@@ -53,9 +53,9 @@
   --bg-hover: #f3f4f6;
   --bg-code: #f6f8fa;
 
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
   --text-link: #7c3aed;
 
   --accent: #7c3aed;
@@ -63,8 +63,8 @@
   --accent-bg: rgba(124, 58, 237, 0.06);
   --accent-border: rgba(124, 58, 237, 0.2);
 
-  --border: #e5e7eb;
-  --border-light: #f3f4f6;
+  --border: #d1d5db;
+  --border-light: #e5e7eb;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
 
@@ -418,6 +418,59 @@ ul, ol { list-style: none; }
   color: var(--text-secondary) !important;
 }
 
+/* ---- Category hierarchy styling ---- */
+
+/* 분류 전체보기 (root) */
+#category_0 div[id="text_0"] {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+#category_0 div[id="text_0"]::before {
+  content: '📂 ';
+  font-size: 0.85rem;
+}
+
+/* 대카테고리 (기본: 모든 카테고리 텍스트) */
+.widget-category div[id^="text_"] {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.6 !important;
+}
+
+/* 대카테고리 행 간격 */
+.widget-category table[id^="category_"] {
+  margin-bottom: 2px;
+}
+
+/* 대카테고리 그룹 간 간격 (대카테고리 + 하위묶음) */
+.widget-category div[id$="_children"] {
+  margin-bottom: 6px !important;
+}
+
+/* 하위카테고리 (_children 안) — 덮어쓰기 */
+.widget-category div[id$="_children"] div[id^="text_"] {
+  font-size: 0.82rem !important;
+  font-weight: 400 !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.7 !important;
+}
+
+/* 하위카테고리 행 간격 */
+.widget-category div[id$="_children"] table[class^="category_"] {
+  margin-bottom: 1px;
+}
+
+/* 하위카테고리 ▸ 접두사 */
+.widget-category div[id$="_children"] div[id^="text_"]::before {
+  content: '▸ ';
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  margin-right: 2px;
+}
+
 /* Category count */
 .widget-category .c_cnt {
   font-size: 0.75rem;
@@ -434,7 +487,7 @@ ul, ol { list-style: none; }
 
 /* Hover effect on category items */
 .widget-category td.branch3:hover div[id^="text_"] {
-  color: var(--text-primary) !important;
+  color: var(--accent-light) !important;
 }
 
 /* Hide Tistory tree icons (expand/collapse arrows, folder images) */
@@ -453,14 +506,25 @@ ul, ol { list-style: none; }
   border-collapse: collapse;
 }
 
-.widget-category td.ib {
+/* 모든 카테고리 td.ib(트리 아이콘 셀) 초기화 */
+.widget-category td.ib,
+.widget-category td[style*="width:39px"],
+.widget-category td[style*="navi_back"] {
   width: 0 !important;
   padding: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  background-image: none !important;
 }
 
-/* Subcategory indent */
-.widget-category div[id$="_children"] table td.ib {
-  width: 12px !important;
+/* 대카테고리: 분류 전체보기와 동일선 (indent 0) */
+.widget-category #treeComponent table[id^="category_"] {
+  padding-left: 0 !important;
+}
+
+/* 하위카테고리: 대카테고리 기준 한 단계 들여쓰기 */
+.widget-category div[id$="_children"] {
+  padding-left: 12px !important;
 }
 
 /* ===== Main Content ===== */
@@ -539,13 +603,13 @@ ul, ol { list-style: none; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 160px;
-  padding: 0 0 0 16px;
+  width: 200px;
+  padding: 0 0 0 20px;
 }
 
 .post-thumb-side img {
-  width: 160px;
-  height: 160px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: var(--radius);
   transition: transform 0.3s;
@@ -1552,13 +1616,13 @@ ul, ol { list-style: none; }
 /* ===== Responsive: Mobile ===== */
 @media (max-width: 768px) {
   .post-thumb-side {
-    width: 100px;
+    width: 120px;
     padding: 12px 12px 12px 0;
   }
 
   .post-thumb-side img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
 
   .post-content {

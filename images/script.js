@@ -95,77 +95,117 @@
     overlay.addEventListener('click', closeSidebar);
   }
 
-  // ===== Visitor Chart — Line Graph (uses Tistory's window.chartData) =====
-  var chartCanvas = document.getElementById('visitorChart');
-  if (chartCanvas) {
-    var ctx = chartCanvas.getContext('2d');
-    var dpr = window.devicePixelRatio || 1;
-    var w = chartCanvas.offsetWidth;
-    var h = chartCanvas.offsetHeight;
-    chartCanvas.width = w * dpr;
-    chartCanvas.height = h * dpr;
-    ctx.scale(dpr, dpr);
+  // ===== Visitor Chart — Custom Chart.js (using Tistory's chartData) =====
+  function createVisitorChart() {
+    var canvas = document.getElementById('visitorChartCustom');
+    if (!canvas || typeof Chart === 'undefined') return false;
+    var data = window.chartData;
+    if (!data || !data.length) return false;
 
-    var rawData = window.chartData || [
-      {count:26},{count:45},{count:38},{count:67},{count:105},{count:52},{count:42}
-    ];
-    var counts = [];
-    for (var ci = 0; ci < rawData.length; ci++) {
-      counts.push(rawData[ci].count || 0);
-    }
-    if (counts.length < 2) counts = [0, 0];
-
-    var maxVal = Math.max.apply(null, counts) || 1;
-    var padX = 6;
-    var padY = 8;
-    var graphW = w - padX * 2;
-    var graphH = h - padY * 2;
-    var step = graphW / (counts.length - 1);
     var cs = getComputedStyle(document.documentElement);
     var accent = cs.getPropertyValue('--accent').trim() || '#7c3aed';
     var accentLt = cs.getPropertyValue('--accent-light').trim() || '#a78bfa';
+    var textMuted = cs.getPropertyValue('--text-muted').trim() || '#6b7280';
+    var borderLight = cs.getPropertyValue('--border-light').trim() || '#2d333b';
+    var bgCard = cs.getPropertyValue('--bg-card').trim() || '#1c2333';
 
-    // Build points
-    var pts = [];
-    for (var pi = 0; pi < counts.length; pi++) {
-      pts.push({
-        x: padX + pi * step,
-        y: padY + graphH - (counts[pi] / maxVal) * graphH
-      });
-    }
+    var labels = data.map(function (d) { return new Date(d.timestamp).getDate(); });
+    var counts = data.map(function (d) { return d.count; });
 
-    // Fill area
-    var grad = ctx.createLinearGradient(0, padY, 0, h);
-    grad.addColorStop(0, accentLt.replace(')', ',0.3)').replace('rgb', 'rgba'));
-    grad.addColorStop(1, 'transparent');
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, h);
-    for (var fi = 0; fi < pts.length; fi++) ctx.lineTo(pts[fi].x, pts[fi].y);
-    ctx.lineTo(pts[pts.length - 1].x, h);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
+    // 첫 번째와 월 변경 지점에 월/일 표시
+    var prevMon = -1;
+    var xLabels = data.map(function (d, i) {
+      var dt = new Date(d.timestamp);
+      var mon = dt.getMonth() + 1;
+      var day = dt.getDate();
+      if (i === 0 || mon !== prevMon) { prevMon = mon; return mon + '/' + day; }
+      prevMon = mon;
+      return '' + day;
+    });
 
-    // Draw line
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
-    for (var li = 1; li < pts.length; li++) ctx.lineTo(pts[li].x, pts[li].y);
-    ctx.strokeStyle = accentLt;
-    ctx.lineWidth = 2;
-    ctx.lineJoin = 'round';
-    ctx.stroke();
-
-    // Draw dots
-    for (var di = 0; di < pts.length; di++) {
-      ctx.beginPath();
-      ctx.arc(pts[di].x, pts[di].y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = accent;
-      ctx.fill();
-      ctx.strokeStyle = accentLt;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    }
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: xLabels,
+        datasets: [{
+          data: counts,
+          borderColor: accentLt,
+          borderWidth: 2,
+          pointStyle: 'circle',
+          pointRadius: 3,
+          pointBackgroundColor: accent,
+          pointBorderColor: accentLt,
+          pointBorderWidth: 2,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 2,
+          pointHoverBackgroundColor: accent,
+          pointHoverBorderColor: accentLt,
+          fill: {
+            target: 'origin',
+            above: accentLt.indexOf('rgb') >= 0
+              ? accentLt.replace(')', ',0.15)').replace('rgb', 'rgba')
+              : accent + '1A'
+          },
+          tension: 0.3
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        devicePixelRatio: 2,
+        interaction: { mode: 'index', intersect: false },
+        scales: {
+          y: {
+            beginAtZero: true,
+            border: { display: false },
+            grid: { color: borderLight },
+            ticks: {
+              color: textMuted,
+              font: { size: 9 },
+              precision: 0,
+              maxTicksLimit: 4
+            }
+          },
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: {
+              color: textMuted,
+              font: { size: 9 }
+            }
+          }
+        },
+        layout: { padding: { left: 2, right: 6, bottom: 0, top: 4 } },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: bgCard,
+            titleColor: textMuted,
+            bodyColor: accentLt,
+            borderColor: borderLight,
+            borderWidth: 1,
+            titleFont: { size: 10 },
+            bodyFont: { size: 12, weight: '600' },
+            padding: 8,
+            displayColors: false,
+            callbacks: {
+              title: function (ctx) { return ctx[0].label; },
+              label: function (ctx) { return ctx.parsed.y + ' visitors'; }
+            }
+          }
+        }
+      }
+    });
+    return true;
   }
+
+  // Chart.js 로딩 대기 후 생성 (최대 5초)
+  var chartAttempts = 0;
+  var chartTimer = setInterval(function () {
+    chartAttempts++;
+    if (createVisitorChart() || chartAttempts > 20) {
+      clearInterval(chartTimer);
+    }
+  }, 250);
 
   // ===== Profile Links — auto icon mapping =====
   var profileLinks = document.querySelectorAll('.profile-links a');

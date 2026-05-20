@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="dark">
 <head>
+  <script>
+    (function(){var t;try{t=localStorage.getItem('devlog-theme')}catch(e){}
+    if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}
+    document.documentElement.setAttribute('data-theme',t)})();
+  </script>
   <!-- Google Tag Manager: 본인 GTM ID로 교체하세요 -->
   <!--
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

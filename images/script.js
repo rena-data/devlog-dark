@@ -43,13 +43,13 @@
     }
   }
 
-  // Initialize theme
+  // Initialize theme: 1) localStorage → 2) OS 설정 감지 → 3) dark 기본
   var stored = getStoredTheme();
   if (stored === 'light' || stored === 'dark') {
     setTheme(stored);
   } else {
-    // Default: dark
-    setTheme('dark');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(prefersDark ? 'dark' : 'light');
   }
 
   if (toggleBtn) {

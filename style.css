@@ -369,11 +369,48 @@ ul, ol { list-style: none; }
   line-height: 1.5;
 }
 
+.profile-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-subscribe {
+  order: 10;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.subscribe-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.subscribe-btn:hover {
+  background: var(--accent-light);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+.subscribe-btn i {
+  font-size: 0.78rem;
+}
+
 .profile-links {
   display: flex;
   justify-content: center;
   gap: 8px;
   margin-top: 10px;
+  order: 9;
 }
 
 .profile-links a {
@@ -2661,11 +2698,7 @@ ul, ol { list-style: none; }
 /* Tistory subscription/share buttons */
 .area_etc { padding: 0 24px; }
 
-/* Profile subscribe button */
-.profile-subscribe {
-  margin: 10px 0 4px;
-  text-align: center;
-}
+/* Profile subscribe button — 이미 .profile-card에서 order로 제어 */
 
 /* Hide Tistory default elements that conflict */
 .container_postbtn { border-color: var(--border) !important; }

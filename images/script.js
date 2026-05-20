@@ -464,6 +464,22 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lightbox.classList.remove('active'); });
   }
 
+  // ===== Custom Subscribe Button =====
+  var subBtn = document.getElementById('customSubscribeBtn');
+  if (subBtn) {
+    subBtn.addEventListener('click', function () {
+      // 티스토리 내장 구독 버튼 찾아서 클릭
+      var tistorySubBtn = document.querySelector('.btn_subscription');
+      if (tistorySubBtn) {
+        tistorySubBtn.click();
+      } else {
+        // 폴백: 티스토리 로그인 페이지로 이동
+        var blogUrl = window.TistoryBlog ? window.TistoryBlog.url : location.origin;
+        location.href = 'https://www.tistory.com/auth/login/?redirectUrl=' + encodeURIComponent(blogUrl);
+      }
+    });
+  }
+
   // ===== Keyboard Shortcuts =====
   document.addEventListener('keydown', function (e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;

@@ -605,7 +605,7 @@ ul, ol { list-style: none; }
   justify-content: center;
   flex-shrink: 0;
   width: 180px;
-  padding: 0 0 0 20px;
+  padding: 0 20px 0 0;
 }
 
 .post-thumb-side img {
@@ -1654,6 +1654,7 @@ ul, ol { list-style: none; }
   .post-thumb-side {
     width: 120px;
     padding: 12px 12px 12px 0;
+    order: -1;
   }
 
   .post-thumb-side img {

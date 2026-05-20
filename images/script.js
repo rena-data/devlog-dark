@@ -10,7 +10,6 @@
   var STORAGE_KEY = 'devlog-theme';
   var html = document.documentElement;
   var toggleBtn = document.getElementById('themeToggle');
-  var themeIcon = document.getElementById('themeIcon');
 
   function getStoredTheme() {
     try {
@@ -24,26 +23,10 @@
     html.setAttribute('data-theme', theme);
     try {
       localStorage.setItem(STORAGE_KEY, theme);
-    } catch (e) {
-      // localStorage unavailable
-    }
-    updateIcon(theme);
+    } catch (e) {}
   }
 
-  var themeLabel = document.getElementById('themeLabel');
-
-  function updateIcon(theme) {
-    if (!themeIcon) return;
-    if (theme === 'light') {
-      themeIcon.className = 'fa-solid fa-sun';
-      if (themeLabel) themeLabel.textContent = 'Light';
-    } else {
-      themeIcon.className = 'fa-solid fa-moon';
-      if (themeLabel) themeLabel.textContent = 'Dark';
-    }
-  }
-
-  // Initialize theme: 1) localStorage → 2) OS 설정 감지 → 3) dark 기본
+  // Initialize theme: 1) localStorage → 2) OS 감지 → 3) dark 기본
   var stored = getStoredTheme();
   if (stored === 'light' || stored === 'dark') {
     setTheme(stored);
@@ -481,22 +464,6 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lightbox.classList.remove('active'); });
   }
 
-  // ===== Hot Badge (comment count >= 5) =====
-  var commentCounts = document.querySelectorAll('.post-list-item .post-comment-count');
-  for (var hi = 0; hi < commentCounts.length; hi++) {
-    var num = parseInt(commentCounts[hi].textContent.replace(/\D/g, ''), 10) || 0;
-    if (num >= 5) {
-      var card = commentCounts[hi].closest('.post-list-item');
-      var titleEl = card ? card.querySelector('.post-title') : null;
-      if (titleEl) {
-        var badge = document.createElement('span');
-        badge.className = 'hot-badge';
-        badge.textContent = 'HOT';
-        titleEl.appendChild(badge);
-      }
-    }
-  }
-
   // ===== Keyboard Shortcuts =====
   document.addEventListener('keydown', function (e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -559,24 +526,48 @@
     naverBtn.href = 'https://blog.naver.com/openapi/share?url=' + pageUrl + '&title=' + pageTitle;
   }
 
-  // ===== NEW Badge (posts within 7 days) =====
-  var listItems = document.querySelectorAll('.post-list-item');
+  // ===== Badges: NEW first, HOT second (좌→우) =====
+  var badgeItems = document.querySelectorAll('.post-list-item');
   var now = new Date();
-  for (var ni = 0; ni < listItems.length; ni++) {
-    var dateEl = listItems[ni].querySelector('.post-date');
-    if (!dateEl) continue;
-    var dateText = dateEl.textContent.trim().replace(/\./g, '-').replace(/\s/g, '');
-    var parts = dateText.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
-    if (parts) {
-      var postDate = new Date(parts[1], parts[2] - 1, parts[3]);
-      var diffDays = (now - postDate) / (1000 * 60 * 60 * 24);
-      if (diffDays <= 7 && diffDays >= 0) {
-        var newBadge = document.createElement('span');
-        newBadge.className = 'new-badge';
-        newBadge.textContent = 'NEW';
-        var titleEl2 = listItems[ni].querySelector('.post-title');
-        if (titleEl2) titleEl2.appendChild(newBadge);
+  for (var bi = 0; bi < badgeItems.length; bi++) {
+    var titleEl = badgeItems[bi].querySelector('.post-title');
+    if (!titleEl) continue;
+
+    var isNew = false;
+    var isHot = false;
+
+    // NEW 판별 (7일 이내)
+    var badgeMetas = badgeItems[bi].querySelectorAll('.post-meta-item');
+    for (var bmi = 0; bmi < badgeMetas.length; bmi++) {
+      if (badgeMetas[bmi].querySelector('.fa-calendar')) {
+        var dateText = badgeMetas[bmi].textContent.trim().replace(/\./g, '-').replace(/\s/g, '');
+        var parts = dateText.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+        if (parts) {
+          var postDate = new Date(parts[1], parts[2] - 1, parts[3]);
+          var diffDays = (now - postDate) / (1000 * 60 * 60 * 24);
+          if (diffDays <= 7 && diffDays >= 0) isNew = true;
+        }
       }
+      // HOT 판별 (댓글 5개 이상)
+      if (badgeMetas[bmi].querySelector('.fa-comment')) {
+        var cnt = parseInt(badgeMetas[bmi].textContent.replace(/\D/g, ''), 10) || 0;
+        if (cnt >= 5) isHot = true;
+      }
+    }
+
+    // NEW 먼저 추가
+    if (isNew) {
+      var nb = document.createElement('span');
+      nb.className = 'new-badge';
+      nb.textContent = 'NEW';
+      titleEl.appendChild(nb);
+    }
+    // HOT 그 다음 추가
+    if (isHot) {
+      var hb = document.createElement('span');
+      hb.className = 'hot-badge';
+      hb.textContent = 'HOT';
+      titleEl.appendChild(hb);
     }
   }
 

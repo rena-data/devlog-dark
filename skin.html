@@ -46,10 +46,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="header-right">
         <nav class="blog-menu">[##_blog_menu_##]</nav>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <i class="fa-solid fa-moon" id="themeIcon"></i>
-          <span class="theme-label" id="themeLabel">Dark</span>
-        </button>
+        <div class="theme-switch" id="themeToggle" role="button" aria-label="Toggle theme" tabindex="0">
+          <i class="fa-solid fa-sun theme-switch-icon"></i>
+          <div class="theme-switch-slider"></div>
+          <i class="fa-solid fa-moon theme-switch-icon"></i>
+        </div>
       </div>
     </div>
   </header>
@@ -186,10 +187,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </h2>
               <p class="post-summary">[##_article_rep_summary_##]</p>
               <div class="post-meta">
-                <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
-                <span class="post-date">[##_article_rep_date_##]</span>
+                <span class="post-meta-item"><i class="fa-regular fa-calendar"></i> [##_article_rep_date_##]</span>
+                <a href="[##_article_rep_category_link_##]" class="post-meta-item post-meta-category"><i class="fa-regular fa-folder"></i> [##_article_rep_category_##]</a>
                 <s_rp_count>
-                  <a href="[##_article_rep_link_##]#comment" class="post-comment-count"><i class="fa-regular fa-comment"></i> [##_article_rep_rp_cnt_##]</a>
+                  <a href="[##_article_rep_link_##]#comment" class="post-meta-item"><i class="fa-regular fa-comment"></i> [##_article_rep_rp_cnt_##]</a>
                 </s_rp_count>
               </div>
             </div>
@@ -404,16 +405,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- ===== 페이징 ===== -->
       <s_paging>
         <div class="pagination">
-          <a [##_prev_page_##] class="page-prev [##_no_more_prev_##]">
-            <i class="fa-solid fa-chevron-left"></i> Prev
+          <a [##_prev_page_##] class="page-btn page-prev [##_no_more_prev_##]" aria-label="이전">
+            <i class="fa-solid fa-chevron-left"></i>
           </a>
           <span class="page-numbers">
             <s_paging_rep>
               <a [##_paging_rep_link_##] class="page-num">[##_paging_rep_link_num_##]</a>
             </s_paging_rep>
           </span>
-          <a [##_next_page_##] class="page-next [##_no_more_next_##]">
-            Next <i class="fa-solid fa-chevron-right"></i>
+          <a [##_next_page_##] class="page-btn page-next [##_no_more_next_##]" aria-label="다음">
+            <i class="fa-solid fa-chevron-right"></i>
           </a>
         </div>
       </s_paging>

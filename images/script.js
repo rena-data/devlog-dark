@@ -544,11 +544,17 @@
   }
   setTimeout(function() { restyleNativeSubscribe(); }, 2000);
 
-  // ===== 분류 전체보기 → 홈 이동 =====
+  // ===== 분류 전체보기 → 전체 글 =====
+  // 사이드바 카테고리 (innerHTML로 카운트 span 보존)
   var catAllLink = document.querySelector('#category_0 a');
   if (catAllLink) {
     catAllLink.href = '/';
-    catAllLink.textContent = '전체 글';
+    catAllLink.innerHTML = catAllLink.innerHTML.replace('분류 전체보기', '전체 글');
+  }
+  // 리스트 헤더 (/category 페이지)
+  var listTitle = document.querySelector('.list-title');
+  if (listTitle && listTitle.firstChild && listTitle.firstChild.nodeType === 3) {
+    listTitle.firstChild.textContent = listTitle.firstChild.textContent.replace('분류 전체보기', '전체 글');
   }
 
   // ===== Keyboard Shortcuts =====
@@ -598,8 +604,6 @@
   if (kakaoBtn) {
     kakaoBtn.addEventListener('click', function (e) {
       e.preventDefault();
-      var kakaoUrl = 'https://sharer.kakao.com/talk/friends/picker/link?url=' + pageUrl + '&app_key=javascript_key';
-      // Fallback: use Kakao link scheme or simple share URL
       if (navigator.share) {
         navigator.share({ title: document.title, url: window.location.href });
       } else {

@@ -23,9 +23,24 @@
   <title>[##_page_title_##]</title>
   <link rel="alternate" type="application/rss+xml" title="[##_title_##]" href="[##_rss_url_##]">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css" as="style">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@6.4.0/css/all.min.css" as="style">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@6.4.0/css/all.min.css">
   <link rel="stylesheet" href="./style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "[##_title_##]",
+    "url": "[##_blog_link_##]",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "[##_blog_link_##]/search/{search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 </head>
 <body id="[##_body_id_##]">
 <!-- Google Tag Manager (noscript): 본인 GTM ID로 교체하세요 -->
@@ -62,25 +77,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="layout">
 
     <!-- ===== 좌측 사이드바 ===== -->
-    <aside class="sidebar sidebar-left">
+    <aside class="sidebar sidebar-left" aria-label="프로필 및 메뉴">
       <s_sidebar>
 
         <!-- 프로필 -->
         <s_sidebar_element>
-          <!-- 프로필 -->
           <div class="widget widget-profile">
             <div class="profile-card">
               <div class="profile-avatar">
                 <img src="[##_image_##]" alt="[##_blogger_##]">
-                <span class="status-dot"></span>
               </div>
               <strong class="profile-name">[##_blogger_##]</strong>
               <p class="profile-desc">[##_desc_##]</p>
-              <div class="profile-subscribe">
-                <button class="subscribe-btn" id="customSubscribeBtn">
-                  <i class="fa-solid fa-bell"></i> 구독하기
-                </button>
-              </div>
               <div class="profile-links">
                 <s_link_rep>
                   <a href="[##_link_url_##]" target="_blank" title="[##_link_site_##]"><i class="fa-solid fa-link"></i></a>
@@ -92,7 +100,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <!-- 검색 -->
         <s_sidebar_element>
-          <!-- 검색 -->
           <div class="widget widget-search">
             <s_search>
               <form action="#" method="get" class="search-box" onsubmit="[##_search_onclick_submit_##]">
@@ -108,7 +115,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <!-- 카테고리 -->
         <s_sidebar_element>
-          <!-- 카테고리 -->
           <div class="widget widget-category">
             <h3 class="widget-title"><i class="fa-solid fa-folder-tree"></i> Categories</h3>
             [##_category_##]
@@ -151,10 +157,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="cover-item">
               <a href="[##_cover_item_link_##]" class="cover-link">
                 <s_cover_item_thumbnail>
-                  <img src="[##_cover_item_thumbnail_##]" alt="[##_cover_item_title_##]">
+                  <img src="[##_cover_item_thumbnail_##]" alt="[##_cover_item_title_##]" loading="lazy">
                 </s_cover_item_thumbnail>
                 <strong>[##_cover_item_title_##]</strong>
-                <span class="cover-date">[##_cover_item_date_##]</span>
+                <time class="cover-date">[##_cover_item_date_##]</time>
               </a>
             </div>
           </s_cover_rep>
@@ -189,8 +195,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </h2>
               <p class="post-summary">[##_article_rep_summary_##]</p>
               <div class="post-meta">
-                <span class="post-meta-item"><i class="fa-regular fa-calendar"></i> [##_article_rep_date_##]</span>
                 <a href="[##_article_rep_category_link_##]" class="post-meta-item post-meta-category"><i class="fa-regular fa-folder"></i> [##_article_rep_category_##]</a>
+                <span class="post-meta-item"><i class="fa-regular fa-calendar"></i> [##_article_rep_date_##]</span>
                 <s_rp_count>
                   <a href="[##_article_rep_link_##]#comment" class="post-meta-item"><i class="fa-regular fa-comment"></i> [##_article_rep_rp_cnt_##]</a>
                 </s_rp_count>
@@ -217,7 +223,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </nav>
               <div class="post-meta">
                 <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
-                <span class="post-date">[##_article_rep_date_##]</span>
+                <time class="post-date">[##_article_rep_date_##]</time>
                 <div class="post-manage" id="postManage">
                   <button class="post-manage-btn" id="postManageBtn" aria-label="글 관리"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                   <div class="post-manage-menu" id="postManageMenu">
@@ -227,12 +233,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </div>
                 </div>
               </div>
-              <h2 class="post-title">[##_article_rep_title_##]</h2>
-              <!-- 글자 크기 조절 -->
               <div class="font-size-controls">
                 <button id="fontDecrease" aria-label="글자 작게">A-</button>
                 <button id="fontIncrease" aria-label="글자 크게">A+</button>
               </div>
+              <h2 class="post-title">[##_article_rep_title_##]</h2>
               <div class="post-body">[##_article_rep_desc_##]</div>
 
               <!-- 태그 -->
@@ -284,7 +289,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                           </span>
                         </s_article_related_rep_thumbnail>
                         <span class="related-text">[##_article_related_rep_title_##]</span>
-                        <span class="related-date">[##_article_related_rep_date_##]</span>
+                        <time class="related-date">[##_article_related_rep_date_##]</time>
                       </a>
                     </li>
                   </s_article_related_rep>
@@ -293,11 +298,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </s_article_related>
 
             <!-- 댓글 -->
-            <div class="comment-area">
+            <section class="comment-area" aria-label="댓글">
               <s_rp>
                 [##_comment_group_##]
               </s_rp>
-            </div>
+            </section>
           </article>
         </s_permalink_article_rep>
 
@@ -310,7 +315,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="post-content">
               <div class="post-meta">
                 <span class="post-category post-category-notice">공지사항</span>
-                <span class="post-date">[##_notice_rep_date_##]</span>
+                <time class="post-date">[##_notice_rep_date_##]</time>
               </div>
               <h2 class="post-title">
                 <a href="[##_notice_rep_link_##]">[##_notice_rep_title_##]</a>
@@ -325,7 +330,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="post-content">
               <div class="post-meta">
                 <a href="/notice" class="post-category post-category-notice">공지사항</a>
-                <span class="post-date">[##_notice_rep_date_##]</span>
+                <time class="post-date">[##_notice_rep_date_##]</time>
               </div>
               <h2 class="post-title">[##_notice_rep_title_##]</h2>
               <div class="post-body">[##_notice_rep_desc_##]</div>
@@ -341,7 +346,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="post-content">
               <div class="post-meta">
                 <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
-                <span class="post-date">[##_article_rep_date_##]</span>
+                <time class="post-date">[##_article_rep_date_##]</time>
               </div>
               <h2 class="post-title">
                 <a href="[##_article_rep_link_##]">[##_article_rep_title_##]</a>
@@ -356,7 +361,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="post-content">
               <div class="post-meta">
                 <a href="[##_article_rep_category_link_##]" class="post-category">[##_article_rep_category_##]</a>
-                <span class="post-date">[##_article_rep_date_##]</span>
+                <time class="post-date">[##_article_rep_date_##]</time>
               </div>
               <h2 class="post-title">[##_article_rep_title_##]</h2>
             </div>
@@ -386,27 +391,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- ===== 태그 페이지 ===== -->
       <s_tag>
-        <div class="tag-page">
+        <section class="tag-page">
           <h2 class="list-title"><i class="fa-solid fa-tags"></i> Tags</h2>
           <div class="tag-cloud tag-cloud-page">
             <s_tag_rep>
               <a href="[##_tag_link_##]" class="tag-item [##_tag_class_##]">[##_tag_name_##]</a>
             </s_tag_rep>
           </div>
-        </div>
+        </section>
       </s_tag>
 
       <!-- ===== 방명록 ===== -->
       <s_guest>
-        <div class="guestbook">
+        <section class="guestbook">
           <h2 class="list-title"><i class="fa-regular fa-envelope"></i> Guestbook</h2>
           [##_guestbook_group_##]
-        </div>
+        </section>
       </s_guest>
 
       <!-- ===== 페이징 ===== -->
       <s_paging>
-        <div class="pagination">
+        <nav class="pagination" aria-label="페이지 탐색">
           <a [##_prev_page_##] class="page-btn page-prev [##_no_more_prev_##]" aria-label="이전">
             <i class="fa-solid fa-chevron-left"></i>
           </a>
@@ -418,7 +423,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a [##_next_page_##] class="page-btn page-next [##_no_more_next_##]" aria-label="다음">
             <i class="fa-solid fa-chevron-right"></i>
           </a>
-        </div>
+        </nav>
       </s_paging>
 
       <!-- 광고 하단 -->
@@ -427,12 +432,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </main>
 
     <!-- ===== 우측 사이드바 ===== -->
-    <aside class="sidebar sidebar-right">
+    <aside class="sidebar sidebar-right" aria-label="위젯">
       <s_sidebar>
 
         <!-- 달력 -->
         <s_sidebar_element>
-          <!-- 달력 -->
           <div class="widget widget-calendar">
             <h3 class="widget-title"><i class="fa-regular fa-calendar"></i> Calendar</h3>
             [##_calendar_##]
@@ -499,10 +503,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 
 
-  <!-- 맨 위로 버튼 -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    <i class="fa-solid fa-chevron-up"></i>
-  </button>
+  <!-- 맨 위로 / 맨 아래로 버튼 -->
+  <div class="scroll-buttons" id="scrollButtons">
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
+    <button class="back-to-bottom" id="backToBottom" aria-label="Back to bottom">
+      <i class="fa-solid fa-chevron-down"></i>
+    </button>
+  </div>
 
   <!-- 모바일 사이드바 토글 -->
   <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Open sidebar">
@@ -511,6 +520,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="mobile-overlay" id="mobileOverlay"></div>
 
 </s_t3>
-<script src="./images/script.js"></script>
+<script src="./images/script.js" defer></script>
 </body>
 </html>

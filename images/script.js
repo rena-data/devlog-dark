@@ -78,6 +78,15 @@
     overlay.addEventListener('click', closeSidebar);
   }
 
+  // ===== Sidebar link click auto-close =====
+  if (sidebarLeft) {
+    sidebarLeft.addEventListener('click', function(e) {
+      if (e.target.closest('a')) {
+        closeSidebar();
+      }
+    });
+  }
+
   // ===== Visitor Chart — Custom Chart.js (using Tistory's chartData) =====
   function createVisitorChart() {
     var canvas = document.getElementById('visitorChartCustom');
@@ -234,19 +243,21 @@
     }
   });
 
-  // ===== Back to Top Button =====
+  // ===== Scroll Buttons (Top / Bottom) =====
+  var scrollBtns = document.getElementById('scrollButtons');
   var topBtn = document.getElementById('backToTop');
-  if (topBtn) {
-    window.addEventListener('scroll', function () {
-      if (window.scrollY > 400) {
-        topBtn.classList.add('visible');
-      } else {
-        topBtn.classList.remove('visible');
-      }
-    });
-    topBtn.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  var bottomBtn = document.getElementById('backToBottom');
+  if (scrollBtns) {
+    if (topBtn) {
+      topBtn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    if (bottomBtn) {
+      bottomBtn.addEventListener('click', function () {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      });
+    }
   }
 
   // ===== Post Manage Dropdown =====
@@ -316,7 +327,7 @@
       var scrolled = -rect.top + window.innerHeight * 0.3;
       var pct = Math.min(Math.max(scrolled / total * 100, 0), 100);
       progressBar.style.width = pct + '%';
-    });
+    }, { passive: true });
   }
 
   // ===== Code Block Copy Button =====
@@ -431,7 +442,7 @@
             tocItems[ai].classList.remove('toc-active');
           }
         }
-      });
+      }, { passive: true });
     }
   }
 
@@ -466,18 +477,78 @@
 
   // ===== Custom Subscribe Button =====
   var subBtn = document.getElementById('customSubscribeBtn');
+  // Hide subscribe button for blog owner
+  var isOwner = document.querySelector('.btn_subscription') === null &&
+                document.querySelector('#postManageBtn') !== null;
+  if (isOwner && subBtn) {
+    subBtn.style.display = 'none';
+  }
   if (subBtn) {
+    // Sync subscription state from Tistory's native button
+    function syncSubscribeState() {
+      var tistorySubBtn = document.querySelector('.btn_subscription');
+      if (!tistorySubBtn) return;
+      var isFollowing = tistorySubBtn.classList.contains('following') ||
+                        tistorySubBtn.textContent.trim().indexOf('구독중') !== -1;
+      if (isFollowing) {
+        subBtn.innerHTML = '<i class="fa-solid fa-bell"></i> 구독중';
+        subBtn.classList.add('subscribed');
+      } else {
+        subBtn.innerHTML = '<i class="fa-solid fa-bell"></i> 구독하기';
+        subBtn.classList.remove('subscribed');
+      }
+    }
+
+    // Initial sync (Tistory may load button async)
+    syncSubscribeState();
+    setTimeout(syncSubscribeState, 1000);
+    setTimeout(syncSubscribeState, 3000);
+
     subBtn.addEventListener('click', function () {
-      // 티스토리 내장 구독 버튼 찾아서 클릭
       var tistorySubBtn = document.querySelector('.btn_subscription');
       if (tistorySubBtn) {
         tistorySubBtn.click();
+        // Re-sync after click
+        setTimeout(syncSubscribeState, 500);
+        setTimeout(syncSubscribeState, 1500);
       } else {
-        // 폴백: 티스토리 로그인 페이지로 이동
         var blogUrl = window.TistoryBlog ? window.TistoryBlog.url : location.origin;
         location.href = 'https://www.tistory.com/auth/login/?redirectUrl=' + encodeURIComponent(blogUrl);
       }
     });
+  }
+
+  // ===== Tistory SubscribeAndNotify Button Restyle =====
+  function restyleNativeSubscribe(root) {
+    var scope = root || document;
+    var btns = scope.querySelectorAll('.area_etc button, .area_etc a[class*="btn"]');
+    btns.forEach(function(btn) {
+      if (btn.dataset.restyled) return;
+      var text = btn.textContent.trim();
+      if (text.indexOf('구독') === -1) return;
+      btn.dataset.restyled = 'true';
+      btn.textContent = '';
+      btn.innerHTML = '\uD83D\uDD14 구독하기';
+      btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:99px;font-size:0.82rem;font-weight:600;cursor:pointer;line-height:1.4;white-space:nowrap;font-family:inherit;gap:4px;';
+      // Hide sibling elements (the "+" icon)
+      var s = btn.nextElementSibling;
+      while (s) { s.style.display = 'none'; s = s.nextElementSibling; }
+    });
+  }
+  restyleNativeSubscribe();
+  // Watch for Tistory React late rendering
+  var areaEtc = document.querySelector('.area_etc');
+  if (areaEtc) {
+    new MutationObserver(function() { restyleNativeSubscribe(areaEtc); })
+      .observe(areaEtc, { childList: true, subtree: true });
+  }
+  setTimeout(function() { restyleNativeSubscribe(); }, 2000);
+
+  // ===== 분류 전체보기 → 홈 이동 =====
+  var catAllLink = document.querySelector('#category_0 a');
+  if (catAllLink) {
+    catAllLink.href = '/';
+    catAllLink.textContent = '전체 글';
   }
 
   // ===== Keyboard Shortcuts =====

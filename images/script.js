@@ -44,6 +44,9 @@
   }
 
   if (toggleBtn) {
+    toggleBtn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+    });
     toggleBtn.addEventListener('click', function () {
       var current = html.getAttribute('data-theme');
       setTheme(current === 'dark' ? 'light' : 'dark');
@@ -109,7 +112,6 @@
     var borderLight = cs.getPropertyValue('--border-light').trim() || '#2d333b';
     var bgCard = cs.getPropertyValue('--bg-card').trim() || '#1c2333';
 
-    var labels = data.map(function (d) { return new Date(d.timestamp).getDate(); });
     var counts = data.map(function (d) { return d.count; });
 
     // 첫 번째와 월 변경 지점에 월/일 표시
@@ -272,7 +274,6 @@
   var manageBtn = document.getElementById('postManageBtn');
   var manageMenu = document.getElementById('postManageMenu');
   var editLink = document.getElementById('postEditLink');
-  var manageLink = document.getElementById('postManageLink');
 
   if (manageBtn && manageMenu) {
     // Get entry ID from Tistory's config
@@ -328,6 +329,15 @@
 
   // ===== Reading Progress Bar (single post only) =====
   var progressBar = document.getElementById('readingProgress');
+  var progressWrap = progressBar && progressBar.parentElement;
+  var headerEl = document.querySelector('.header');
+  if (progressWrap && headerEl) {
+    function syncProgressTop() {
+      progressWrap.style.top = headerEl.offsetHeight + 'px';
+    }
+    syncProgressTop();
+    window.addEventListener('resize', syncProgressTop);
+  }
   if (progressBar && singleBody) {
     window.addEventListener('scroll', function () {
       var rect = singleBody.getBoundingClientRect();
@@ -467,90 +477,6 @@
     });
   }
 
-  // ===== Image Lightbox =====
-  var lightbox = document.getElementById('lightbox');
-  var lightboxImg = document.getElementById('lightboxImg');
-  var lightboxClose = document.getElementById('lightboxClose');
-  if (lightbox && singleBody) {
-    singleBody.addEventListener('click', function (e) {
-      if (e.target.tagName === 'IMG') {
-        lightboxImg.src = e.target.src;
-        lightbox.classList.add('active');
-      }
-    });
-    if (lightboxClose) lightboxClose.addEventListener('click', function () { lightbox.classList.remove('active'); });
-    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) lightbox.classList.remove('active'); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lightbox.classList.remove('active'); });
-  }
-
-  // ===== Custom Subscribe Button =====
-  var subBtn = document.getElementById('customSubscribeBtn');
-  // Hide subscribe button for blog owner
-  var isOwner = document.querySelector('.btn_subscription') === null &&
-                document.querySelector('#postManageBtn') !== null;
-  if (isOwner && subBtn) {
-    subBtn.style.display = 'none';
-  }
-  if (subBtn) {
-    // Sync subscription state from Tistory's native button
-    function syncSubscribeState() {
-      var tistorySubBtn = document.querySelector('.btn_subscription');
-      if (!tistorySubBtn) return;
-      var isFollowing = tistorySubBtn.classList.contains('following') ||
-                        tistorySubBtn.textContent.trim().indexOf('구독중') !== -1;
-      if (isFollowing) {
-        subBtn.innerHTML = '<i class="fa-solid fa-bell"></i> 구독중';
-        subBtn.classList.add('subscribed');
-      } else {
-        subBtn.innerHTML = '<i class="fa-solid fa-bell"></i> 구독하기';
-        subBtn.classList.remove('subscribed');
-      }
-    }
-
-    // Initial sync (Tistory may load button async)
-    syncSubscribeState();
-    setTimeout(syncSubscribeState, 1000);
-    setTimeout(syncSubscribeState, 3000);
-
-    subBtn.addEventListener('click', function () {
-      var tistorySubBtn = document.querySelector('.btn_subscription');
-      if (tistorySubBtn) {
-        tistorySubBtn.click();
-        // Re-sync after click
-        setTimeout(syncSubscribeState, 500);
-        setTimeout(syncSubscribeState, 1500);
-      } else {
-        var blogUrl = window.TistoryBlog ? window.TistoryBlog.url : location.origin;
-        location.href = 'https://www.tistory.com/auth/login/?redirectUrl=' + encodeURIComponent(blogUrl);
-      }
-    });
-  }
-
-  // ===== Tistory SubscribeAndNotify Button Restyle =====
-  function restyleNativeSubscribe(root) {
-    var scope = root || document;
-    var btns = scope.querySelectorAll('.area_etc button, .area_etc a[class*="btn"]');
-    btns.forEach(function(btn) {
-      if (btn.dataset.restyled) return;
-      var text = btn.textContent.trim();
-      if (text.indexOf('구독') === -1) return;
-      btn.dataset.restyled = 'true';
-      btn.textContent = '';
-      btn.innerHTML = '\uD83D\uDD14 구독하기';
-      btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:99px;font-size:0.82rem;font-weight:600;cursor:pointer;line-height:1.4;white-space:nowrap;font-family:inherit;gap:4px;';
-      // Hide sibling elements (the "+" icon)
-      var s = btn.nextElementSibling;
-      while (s) { s.style.display = 'none'; s = s.nextElementSibling; }
-    });
-  }
-  restyleNativeSubscribe();
-  // Watch for Tistory React late rendering
-  var areaEtc = document.querySelector('.area_etc');
-  if (areaEtc) {
-    new MutationObserver(function() { restyleNativeSubscribe(areaEtc); })
-      .observe(areaEtc, { childList: true, subtree: true });
-  }
-  setTimeout(function() { restyleNativeSubscribe(); }, 2000);
 
   // ===== 분류 전체보기 → 전체 글 =====
   // 사이드바 카테고리 (innerHTML로 카운트 span 보존)
@@ -572,7 +498,7 @@
 
   // ===== Keyboard Shortcuts =====
   document.addEventListener('keydown', function (e) {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
     if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
       var si = document.querySelector('.search-box input');
@@ -741,6 +667,8 @@
     var catX = -80, catY = -80, catTX = -80, catTY = -80;
     var walkFrame = 0, walkTimer = 0, catIdle = false;
     var catHasMoved = false;
+    var legs = catSvg.querySelectorAll('.cat-leg-fr, .cat-leg-bl');
+    var legs2 = catSvg.querySelectorAll('.cat-leg-fl, .cat-leg-br');
 
     catEl.style.display = 'none';
     document.addEventListener('mousemove', function (e) {
@@ -792,8 +720,6 @@
 
       walkTimer++;
       if (walkTimer % 10 === 0) walkFrame = (walkFrame + 1) % 2;
-      var legs = catSvg.querySelectorAll('.cat-leg-fr, .cat-leg-bl');
-      var legs2 = catSvg.querySelectorAll('.cat-leg-fl, .cat-leg-br');
       var shift = catIdle ? 0 : (walkFrame === 0 ? -2 : 2);
       legs.forEach(function (l) { l.setAttribute('y', 35 + shift); });
       legs2.forEach(function (l) { l.setAttribute('y', 35 - shift); });

@@ -398,48 +398,7 @@ ul, ol { list-style: none; }
   flex-direction: column;
 }
 
-.profile-subscribe {
-  order: 10;
-  margin-top: 10px;
-  text-align: center;
-}
 
-.subscribe-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 20px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 99px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.subscribe-btn:hover {
-  background: var(--accent-light);
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
-}
-
-.subscribe-btn i {
-  font-size: 0.78rem;
-}
-
-.subscribe-btn.subscribed {
-  background: var(--bg-hover);
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-}
-
-.subscribe-btn.subscribed:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-  box-shadow: none;
-}
 
 .profile-links {
   display: flex;
@@ -973,8 +932,7 @@ ins,
   box-sizing: border-box;
 }
 
-.post-content,
-.post-single {
+.post-content {
   overflow: hidden;
 }
 
@@ -1644,29 +1602,7 @@ ins,
   text-overflow: ellipsis;
 }
 
-/* ===== Links Widget ===== */
-.widget-links li {
-  border-bottom: 1px solid var(--border-light);
-}
 
-.widget-links li:last-child {
-  border-bottom: none;
-}
-
-.widget-links a {
-  display: block;
-  padding: 6px 6px;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  border-radius: var(--radius-sm);
-  transition: all 0.15s;
-}
-
-.widget-links a:hover {
-  color: var(--accent-light);
-  background: var(--bg-hover);
-}
 
 /* ===== Protected Post ===== */
 .protected-post {
@@ -1936,6 +1872,7 @@ ins,
   /* Header */
   .header-inner { padding: 0 12px; height: 48px; }
   .blog-title { font-size: 0.95rem; }
+  .sidebar-left { top: 48px; height: calc(100vh - 48px); }
   .header-right { gap: 8px; }
   .blog-menu { display: none; }
 
@@ -1947,8 +1884,6 @@ ins,
   .theme-switch .fa-sun { left: 3px; }
   .theme-switch .fa-moon { right: 3px; }
 
-  /* Reading progress header height */
-  .reading-progress { top: 48px; }
 
   /* Footer */
   .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
@@ -1976,12 +1911,12 @@ ins,
 
 /* ===== Reading Progress Bar (below header) ===== */
 .reading-progress {
-  position: sticky;
+  position: fixed;
   top: 56px;
   left: 0;
   width: 100%;
   height: 3px;
-  z-index: 100;
+  z-index: 99;
   background: transparent;
 }
 
@@ -2317,44 +2252,6 @@ ins,
   .toc-trigger { display: none !important; }
 }
 
-/* ===== Lightbox ===== */
-.lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(4px);
-  align-items: center;
-  justify-content: center;
-  cursor: zoom-out;
-}
-.lightbox.active {
-  display: flex;
-}
-.lightbox img {
-  max-width: 90vw;
-  max-height: 90vh;
-  border-radius: var(--radius);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-}
-.lightbox-close {
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-.lightbox-close:hover { opacity: 1; }
-
-.post-single .post-body img {
-  cursor: zoom-in;
-}
 
 /* ===== Hot Badge ===== */
 .hot-badge {
@@ -2376,7 +2273,7 @@ ins,
   .scroll-buttons, .mobile-sidebar-toggle, .mobile-overlay,
   .reading-progress, .svg-cat, .share-buttons,
   .font-size-controls, .post-nav-wrap, .related-posts,
-  .comment-area, .pagination, .lightbox { display: none !important; }
+  .comment-area, .pagination { display: none !important; }
 
   .layout {
     display: block !important;
@@ -2721,7 +2618,7 @@ ins,
 
 .comment-area .tt_btn_submit,
 .comment-area .tt_btn_register,
-.comment-area .tt-btn_register {
+.comment-area .tt-btn-register {
   padding: 8px 20px;
   background: var(--accent) !important;
   color: #fff !important;
@@ -2737,7 +2634,7 @@ ins,
 
 .comment-area .tt_btn_submit:hover,
 .comment-area .tt_btn_register:hover,
-.comment-area .tt-btn_register:hover {
+.comment-area .tt-btn-register:hover {
   background: var(--accent-light) !important;
   border-color: var(--accent-light) !important;
 }
@@ -2977,7 +2874,7 @@ ins,
 /* -- Submit button (both modes) -- */
 .guestbook .tt_btn_submit,
 .guestbook .tt_btn_register,
-.guestbook .tt-btn_register,
+.guestbook .tt-btn-register,
 .guestbook .tt-btn-register {
   padding: 8px 20px;
   background: var(--accent) !important;
@@ -3073,7 +2970,7 @@ ins,
 /* Dark submit button */
 [data-theme="dark"] .guestbook .tt_btn_submit,
 [data-theme="dark"] .guestbook .tt_btn_register,
-[data-theme="dark"] .guestbook .tt-btn_register,
+[data-theme="dark"] .guestbook .tt-btn-register,
 [data-theme="dark"] .guestbook .tt-btn-register {
   background: var(--accent) !important;
   color: #fff !important;

@@ -60,6 +60,7 @@
 
   function openSidebar() {
     if (sidebarLeft) sidebarLeft.classList.add('open');
+    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'true');
     if (overlay) overlay.classList.add('active');
     if (sidebarToggle) {
       sidebarToggle.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -68,6 +69,7 @@
 
   function closeSidebar() {
     if (sidebarLeft) sidebarLeft.classList.remove('open');
+    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
     if (overlay) overlay.classList.remove('active');
     if (sidebarToggle) {
       sidebarToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
@@ -312,6 +314,7 @@
       manageBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         manageMenu.classList.toggle('open');
+        manageBtn.setAttribute('aria-expanded', manageMenu.classList.contains('open'));
       });
 
       document.addEventListener('click', function () {
@@ -336,7 +339,10 @@
       progressWrap.style.top = headerEl.offsetHeight + 'px';
     }
     syncProgressTop();
-    window.addEventListener('resize', syncProgressTop);
+    var _resizeTimer1;
+    window.addEventListener('resize', function () {
+      clearTimeout(_resizeTimer1); _resizeTimer1 = setTimeout(syncProgressTop, 100);
+    });
   }
   if (progressBar && singleBody) {
     window.addEventListener('scroll', function () {
@@ -372,7 +378,6 @@
   var listCards = document.querySelectorAll('.post-list-item');
   for (var lc = 0; lc < listCards.length; lc++) {
     (function (card) {
-      card.style.cursor = 'pointer';
       card.addEventListener('click', function (e) {
         if (e.target.closest('a')) return; // let actual links work normally
         var link = card.querySelector('.post-title a');
@@ -432,7 +437,10 @@
       tocContainer.addEventListener('mouseleave', hidePanel);
 
       positionToc();
-      window.addEventListener('resize', positionToc);
+      var _resizeTimer2;
+      window.addEventListener('resize', function () {
+        clearTimeout(_resizeTimer2); _resizeTimer2 = setTimeout(positionToc, 100);
+      });
 
       window.addEventListener('scroll', function () {
         var bodyRect = singleBody.getBoundingClientRect();

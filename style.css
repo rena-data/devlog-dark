@@ -641,11 +641,14 @@ ul, ol { list-style: none; }
   gap: 24px;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
   margin-bottom: 16px;
   padding: 20px;
+  padding-left: 12px;
   box-shadow: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.15s;
 }
 
 .post-list-item:hover {
@@ -932,7 +935,8 @@ ins,
   box-sizing: border-box;
 }
 
-.post-content {
+.post-content,
+.post-single {
   overflow: hidden;
 }
 
@@ -1288,61 +1292,6 @@ ins,
   color: var(--accent-light);
 }
 
-.comment-item {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.comment-item:last-child {
-  border-bottom: none;
-}
-
-.comment-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.comment-author {
-  font-weight: 600;
-  font-size: 0.87rem;
-  color: var(--text-primary);
-}
-
-.comment-date {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.comment-body {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.comment-actions {
-  margin-top: 6px;
-}
-
-.comment-actions a {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-right: 8px;
-}
-
-.comment-actions a:hover {
-  color: var(--accent-light);
-}
-
-/* Reply indent */
-.comment-item.rp_general + .comment-item.rp_reply,
-.comment-item[class*="reply"] {
-  margin-left: 24px;
-  padding-left: 16px;
-  border-left: 2px solid var(--accent-border);
-}
 
 /* ===== Comment Form ===== */
 .comment-form {
@@ -1652,16 +1601,6 @@ ins,
   margin-bottom: 20px;
 }
 
-.page-heading {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: var(--text-primary);
-}
-
-.page-heading i {
-  color: var(--accent-light);
-}
 
 .guest-item {
   padding: 12px 0;
@@ -2018,14 +1957,6 @@ ins,
   font-family: inherit;
 }
 
-/* ===== Post List Card Clickable + Hover ===== */
-.post-list-item {
-  cursor: pointer;
-  border-left: 3px solid transparent;
-  padding-left: 12px;
-  transition: border-color 0.2s, background 0.15s;
-}
-
 .post-list-item:hover {
   border-left-color: var(--accent);
   background: var(--bg-hover);
@@ -2248,8 +2179,8 @@ ins,
   padding-left: 14px;
 }
 
-@media (max-width: 768px) {
-  .toc-trigger { display: none !important; }
+@media (max-width: 1200px) {
+  .toc-trigger, .toc-container { display: none !important; }
 }
 
 
@@ -2309,12 +2240,6 @@ ins,
   background: var(--bg-code) !important;
 }
 
-/* ===== Index / List Header ===== */
-.index_title {
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--accent);
-}
 
 .list-header {
   margin-bottom: 20px;

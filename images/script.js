@@ -6,6 +6,14 @@
 (function () {
   'use strict';
 
+  // ===== Canonical URL =====
+  if (!document.querySelector('link[rel="canonical"]')) {
+    var link = document.createElement('link');
+    link.rel = 'canonical';
+    link.href = window.location.origin + window.location.pathname;
+    document.head.appendChild(link);
+  }
+
   // ===== Dark / Light Mode Toggle =====
   var STORAGE_KEY = 'devlog-theme';
   var html = document.documentElement;
@@ -553,8 +561,13 @@
   }
   // 리스트 헤더 (/category 페이지)
   var listTitle = document.querySelector('.list-title');
-  if (listTitle && listTitle.firstChild && listTitle.firstChild.nodeType === 3) {
-    listTitle.firstChild.textContent = listTitle.firstChild.textContent.replace('분류 전체보기', '전체 글');
+  if (listTitle) {
+    var nodes = listTitle.childNodes;
+    for (var ni = 0; ni < nodes.length; ni++) {
+      if (nodes[ni].nodeType === 3 && nodes[ni].textContent.indexOf('분류 전체보기') !== -1) {
+        nodes[ni].textContent = nodes[ni].textContent.replace('분류 전체보기', '전체 글');
+      }
+    }
   }
 
   // ===== Keyboard Shortcuts =====

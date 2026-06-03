@@ -1227,10 +1227,12 @@ ins,
   gap: 8px;
   padding: 20px 24px;
   border-top: 1px solid var(--border);
+  overflow: hidden;
 }
 
 .post-nav-item {
   display: block;
+  min-width: 0;
   padding: 12px 16px;
   background: var(--bg-hover);
   border: 1px solid var(--border-light);
@@ -1917,6 +1919,7 @@ ins,
   .post-list-item { gap: 16px; padding: 16px; }
   .blog-menu a { font-size: 0.78rem; padding: 4px 6px; }
   .post-nav-wrap { grid-template-columns: 1fr; padding: 16px; }
+  .post-nav-item .nav-title { white-space: normal; }
 }
 
 /* ===== Responsive: 768px — Mobile ===== */
@@ -1990,10 +1993,11 @@ ins,
 }
 
 /* ===== Scroll Buttons (Top / Bottom) ===== */
+/* right: 84px — 티스토리 메뉴바/구독버튼(오른쪽 하단)과 겹침 방지 */
 .scroll-buttons {
   position: fixed;
   bottom: 24px;
-  right: 24px;
+  right: 84px;
   z-index: 200;
   display: flex;
   flex-direction: column;
@@ -2991,13 +2995,13 @@ ins,
   padding: 16px 0;
 }
 
-/* -- Write area form (both modes) -- */
+/* -- Write area: 외곽 컨테이너만 border 제거 -- */
 .guestbook .tt-area-write,
 .guestbook .tt-box-write,
-.guestbook .tt-wrap-write {
-  border: 1px solid var(--border) !important;
-  border-radius: var(--radius);
-  overflow: hidden;
+.guestbook .tt-wrap-write,
+.guestbook .tt-comment-cont {
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .guestbook textarea,
@@ -3005,6 +3009,10 @@ ins,
 .guestbook input[type="password"] {
   font-family: inherit;
   font-size: 0.9rem;
+}
+.guestbook textarea {
+  border: none !important;
+  background: transparent !important;
 }
 
 /* -- Reply link -- */
@@ -3026,18 +3034,20 @@ ins,
 [data-theme="dark"] .guestbook .tt_box_total,
 [data-theme="dark"] .guestbook .tt-comment-area {
   background: var(--bg-card) !important;
-  border-color: var(--border) !important;
 }
 
 /* Write area backgrounds */
-[data-theme="dark"] .guestbook .tt-box-account,
 [data-theme="dark"] .guestbook .tt-area-write,
 [data-theme="dark"] .guestbook .tt-box-write,
+[data-theme="dark"] .guestbook .tt-wrap-write,
+[data-theme="dark"] .guestbook .tt-comment-cont {
+  background: transparent !important;
+}
+[data-theme="dark"] .guestbook .tt-box-account,
 [data-theme="dark"] .guestbook .tt-box-textarea,
-[data-theme="dark"] .guestbook .tt-box-textarea .tt-inner-g,
-[data-theme="dark"] .guestbook .tt-wrap-write {
-  background: var(--bg-secondary) !important;
-  border-color: var(--border) !important;
+[data-theme="dark"] .guestbook .tt-box-textarea .tt-inner-g {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border) !important;
   color: var(--text-primary) !important;
 }
 
@@ -3091,11 +3101,26 @@ ins,
   color: var(--text-muted) !important;
 }
 
-/* Input/textarea */
-[data-theme="dark"] .guestbook textarea,
+/* Input — 다크모드 */
 [data-theme="dark"] .guestbook input {
   background: var(--bg-input) !important;
-  border-color: var(--border) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+/* Textarea — 다크모드 (border는 부모 컨테이너가 담당) */
+[data-theme="dark"] .guestbook textarea {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+}
+
+/* 다크모드 방명록 모든 텍스트 밝게 */
+[data-theme="dark"] .guestbook .tt-area-write,
+[data-theme="dark"] .guestbook .tt-area-write *,
+[data-theme="dark"] .guestbook .tt-comment-cont textarea,
+[data-theme="dark"] .guestbook .tt-comment-cont input,
+[data-theme="dark"] .guestbook .tt-box-textarea,
+[data-theme="dark"] .guestbook .tt-box-textarea * {
   color: var(--text-primary) !important;
 }
 
@@ -3213,3 +3238,5 @@ ins,
   .page-numbers .page-num { min-width: 32px; height: 32px; font-size: 0.8rem; }
   .pagination { gap: 2px; }
 }
+
+
